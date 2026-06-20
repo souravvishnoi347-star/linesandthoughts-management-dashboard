@@ -13,7 +13,9 @@ export function Sidebar() {
   return (
     <aside className="hidden md:flex flex-col h-screen fixed bg-primary-container/80 backdrop-blur-xl docked w-sidebar-width left-0 border-r border-outline-variant/20 shadow-xl py-base z-50">
       <div className="px-gutter mb-8 flex items-center justify-center pt-4">
-        <Image src="/logo.png" alt="Lines & Thoughts logo" width={180} height={70} className="object-contain" priority />
+        <div className="bg-white p-2 rounded-xl shadow-sm">
+          <Image src="/logo.png" alt="Lines & Thoughts logo" width={180} height={70} className="object-contain" priority />
+        </div>
       </div>
 
       <nav className="flex-1 overflow-y-auto px-base space-y-1">

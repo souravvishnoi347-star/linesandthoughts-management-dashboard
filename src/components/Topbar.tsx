@@ -5,7 +5,7 @@ export function Topbar() {
   return (
     <header className="flex justify-between items-center w-full px-gutter h-16 sticky top-0 z-40 bg-surface/70 backdrop-blur-md docked border-b border-outline-variant/20 duration-150 ease-in-out">
       <div className="flex items-center gap-4 flex-1">
-        <div className="md:hidden flex items-center">
+        <div className="md:hidden flex items-center bg-white p-1 rounded-lg shadow-sm">
           <Image src="/logo.png" alt="Logo" width={140} height={40} className="object-contain" priority />
         </div>
         
