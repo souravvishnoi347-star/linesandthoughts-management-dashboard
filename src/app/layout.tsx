@@ -8,8 +8,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Onsite Teams ERP",
-  description: "Construction ERP Replica with Premium Design",
+  title: "Lines & Thoughts ERP",
+  description: "Management Dashboard by Kartik | Akshay",
 };
 
 export default function RootLayout({
