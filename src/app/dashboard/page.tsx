@@ -1,9 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Card } from '@/components/ui/Card';
 import { supabase } from '@/lib/supabase';
-import { Building2, Package, IndianRupee, FileText } from 'lucide-react';
+import Link from 'next/link';
 
 export default function DashboardOverview() {
   const [stats, setStats] = useState({ projects: 0, materials: 0, expenses: 0, dprs: 0 });
@@ -36,130 +35,178 @@ export default function DashboardOverview() {
     fetchStats();
   }, []);
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center p-16 h-full flex-1">
+        <div className="w-10 h-10 border-4 border-surface-container border-t-secondary rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-      <div>
-        <h1 style={{ fontSize: '2.5rem', fontWeight: 800, letterSpacing: '-1px' }}>Dashboard Overview</h1>
-        <p className="text-muted">Welcome to Lines & Thoughts Operations Center</p>
+    <div className="p-container-padding space-y-6 flex-1 overflow-x-hidden">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-2">
+        <div>
+          <h2 className="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-on-surface mb-1">Dashboard Overview</h2>
+          <p className="text-on-surface-variant font-body-md">Real-time metrics and recent activities across all sites.</p>
+        </div>
+        <div className="flex gap-2">
+          <button className="px-4 py-2 border border-outline-variant text-on-surface font-label-md text-label-md rounded-lg hover:bg-surface-container-low transition-colors flex items-center gap-2">
+            <span className="material-symbols-outlined text-[18px]">calendar_today</span>
+            This Week
+          </button>
+          <button className="px-4 py-2 bg-primary-container text-on-primary font-label-md text-label-md rounded-lg hover:bg-inverse-surface transition-colors shadow-sm hidden sm:block">
+            Generate Report
+          </button>
+        </div>
       </div>
 
-      {loading ? (
-        <div style={{ display: 'flex', justifyContent: 'center', padding: '4rem' }}>
-          <div style={{ width: '40px', height: '40px', borderRadius: '50%', border: '3px solid var(--border)', borderTopColor: 'var(--primary)', animation: 'spin 1s linear infinite' }}></div>
-          <style>{`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
+      {/* Bento Grid: Metric Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Metric 1: Total Active Sites (Slate) */}
+        <div className="bg-surface-container-lowest rounded-xl p-5 border border-outline-variant/30 flex flex-col justify-between relative overflow-hidden group">
+          <div className="absolute -right-4 -top-4 w-24 h-24 bg-primary-container/5 rounded-full blur-xl group-hover:bg-primary-container/10 transition-colors"></div>
+          <div className="flex justify-between items-start mb-4 z-10">
+            <div className="p-2 bg-surface-container-low text-primary-container rounded-lg">
+              <span className="material-symbols-outlined">architecture</span>
+            </div>
+            <span className="text-secondary font-label-md text-label-md flex items-center gap-1 bg-secondary-container/30 px-2 py-0.5 rounded-full">
+              <span className="material-symbols-outlined text-[14px]">arrow_upward</span> Active
+            </span>
+          </div>
+          <div className="z-10">
+            <p className="text-on-surface-variant font-label-sm text-label-sm mb-1 uppercase tracking-wider">Total Active Sites</p>
+            <h3 className="font-display-lg text-display-lg text-on-surface">{stats.projects}</h3>
+          </div>
         </div>
-      ) : (
-        <>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem' }}>
-            <div className="metric-card bg-gradient-1">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <div>
-                  <p style={{ fontSize: '0.9rem', opacity: 0.9, fontWeight: 500, marginBottom: '0.25rem' }}>Active Projects</p>
-                  <p style={{ fontSize: '2.5rem', fontWeight: 800, letterSpacing: '-1px' }}>{stats.projects}</p>
-                </div>
-                <div style={{ padding: '0.75rem', background: 'rgba(255,255,255,0.2)', borderRadius: '12px' }}>
-                  <Building2 size={24} color="white" />
-                </div>
-              </div>
-            </div>
 
-            <div className="metric-card bg-gradient-2">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <div>
-                  <p style={{ fontSize: '0.9rem', opacity: 0.9, fontWeight: 500, marginBottom: '0.25rem' }}>Material Entries</p>
-                  <p style={{ fontSize: '2.5rem', fontWeight: 800, letterSpacing: '-1px' }}>{stats.materials}</p>
-                </div>
-                <div style={{ padding: '0.75rem', background: 'rgba(255,255,255,0.2)', borderRadius: '12px' }}>
-                  <Package size={24} color="white" />
-                </div>
-              </div>
-            </div>
-
-            <div className="metric-card bg-gradient-3">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <div>
-                  <p style={{ fontSize: '0.9rem', opacity: 0.9, fontWeight: 500, marginBottom: '0.25rem' }}>Total Expenses</p>
-                  <p style={{ fontSize: '2.5rem', fontWeight: 800, letterSpacing: '-1px' }}>₹{stats.expenses.toLocaleString('en-IN')}</p>
-                </div>
-                <div style={{ padding: '0.75rem', background: 'rgba(255,255,255,0.2)', borderRadius: '12px' }}>
-                  <IndianRupee size={24} color="white" />
-                </div>
-              </div>
-            </div>
-
-            <div className="metric-card bg-gradient-4">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <div>
-                  <p style={{ fontSize: '0.9rem', opacity: 0.9, fontWeight: 500, marginBottom: '0.25rem' }}>DPRs Submitted</p>
-                  <p style={{ fontSize: '2.5rem', fontWeight: 800, letterSpacing: '-1px' }}>{stats.dprs}</p>
-                </div>
-                <div style={{ padding: '0.75rem', background: 'rgba(255,255,255,0.2)', borderRadius: '12px' }}>
-                  <FileText size={24} color="white" />
-                </div>
-              </div>
+        {/* Metric 2: Material Entries */}
+        <div className="bg-surface-container-lowest rounded-xl p-5 border border-outline-variant/30 flex flex-col justify-between relative overflow-hidden group">
+          <div className="absolute -right-4 -top-4 w-24 h-24 bg-surface-dim/30 rounded-full blur-xl group-hover:bg-surface-dim/50 transition-colors"></div>
+          <div className="flex justify-between items-start mb-4 z-10">
+            <div className="p-2 bg-surface-container text-on-surface rounded-lg">
+              <span className="material-symbols-outlined">inventory_2</span>
             </div>
           </div>
+          <div className="z-10">
+            <p className="text-on-surface-variant font-label-sm text-label-sm mb-1 uppercase tracking-wider">Material Entries</p>
+            <h3 className="font-display-lg text-display-lg text-on-surface">{stats.materials}</h3>
+          </div>
+        </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginTop: '1rem' }}>
-            <Card glass style={{ padding: '2rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
-                <div style={{ padding: '0.5rem', background: 'rgba(244, 63, 94, 0.1)', borderRadius: '8px', color: 'var(--danger)' }}>
-                  <IndianRupee size={20} />
-                </div>
-                <h2 style={{ fontSize: '1.2rem', fontWeight: 700 }}>Recent Expenses</h2>
-              </div>
-              
-              {recentExpenses.length === 0 ? (
-                <div style={{ textAlign: 'center', padding: '2rem 0', color: 'var(--text-muted)' }}>
-                  <p>No expenses logged yet.</p>
-                </div>
-              ) : (
-                <ul style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        {/* Metric 3: Petty Cash Spent (Rose/Error) */}
+        <div className="bg-surface-container-lowest rounded-xl p-5 border border-outline-variant/30 flex flex-col justify-between relative overflow-hidden group">
+          <div className="absolute -right-4 -top-4 w-24 h-24 bg-error-container/30 rounded-full blur-xl group-hover:bg-error-container/50 transition-colors"></div>
+          <div className="flex justify-between items-start mb-4 z-10">
+            <div className="p-2 bg-error-container text-on-error-container rounded-lg">
+              <span className="material-symbols-outlined">payments</span>
+            </div>
+            <span className="text-error font-label-md text-label-md flex items-center gap-1 bg-error-container/30 px-2 py-0.5 rounded-full">
+              <span className="material-symbols-outlined text-[14px]">warning</span> Total
+            </span>
+          </div>
+          <div className="z-10">
+            <p className="text-on-surface-variant font-label-sm text-label-sm mb-1 uppercase tracking-wider">Petty Cash Spent</p>
+            <h3 className="font-headline-lg text-headline-lg text-on-surface mt-2">₹{stats.expenses.toLocaleString('en-IN')}</h3>
+          </div>
+        </div>
+
+        {/* Metric 4: DPRs Submitted */}
+        <div className="bg-surface-container-lowest rounded-xl p-5 border border-outline-variant/30 flex flex-col justify-between relative overflow-hidden group">
+          <div className="absolute -right-4 -top-4 w-24 h-24 bg-tertiary-fixed/30 rounded-full blur-xl group-hover:bg-tertiary-fixed/50 transition-colors"></div>
+          <div className="flex justify-between items-start mb-4 z-10">
+            <div className="p-2 bg-tertiary-fixed text-on-tertiary-fixed rounded-lg">
+              <span className="material-symbols-outlined">description</span>
+            </div>
+          </div>
+          <div className="z-10">
+            <p className="text-on-surface-variant font-label-sm text-label-sm mb-1 uppercase tracking-wider">DPRs Submitted</p>
+            <h3 className="font-display-lg text-display-lg text-on-surface">{stats.dprs}</h3>
+          </div>
+        </div>
+      </div>
+
+      {/* Complex Layout Area */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+        {/* Recent Activities Table Area */}
+        <div className="bg-surface-container-lowest rounded-xl border border-outline-variant/30 p-0 flex flex-col shadow-sm overflow-hidden">
+          <div className="p-5 border-b border-outline-variant/20 flex justify-between items-center bg-surface-container-low/50">
+            <h3 className="font-headline-md text-headline-md text-on-surface">Recent Expenses</h3>
+            <button className="text-on-surface-variant hover:text-on-surface transition-colors">
+              <span className="material-symbols-outlined">more_horiz</span>
+            </button>
+          </div>
+          <div className="overflow-x-auto">
+            {recentExpenses.length === 0 ? (
+              <div className="p-8 text-center text-on-surface-variant font-body-md">No expenses logged yet.</div>
+            ) : (
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="bg-surface-bright text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider border-b border-outline-variant/20">
+                    <th className="py-3 px-5 font-medium">Description</th>
+                    <th className="py-3 px-5 font-medium text-right">Amount</th>
+                  </tr>
+                </thead>
+                <tbody className="text-body-md font-body-md">
                   {recentExpenses.map(exp => (
-                    <li key={exp.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border)', paddingBottom: '0.75rem' }}>
-                      <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <span style={{ fontWeight: 600, fontSize: '0.95rem' }}>{exp.description}</span>
-                        <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{new Date(exp.date).toLocaleDateString('en-IN')}</span>
-                      </div>
-                      <span style={{ color: 'var(--danger)', fontWeight: 700, fontSize: '1.1rem', backgroundColor: 'rgba(244, 63, 94, 0.05)', padding: '0.25rem 0.75rem', borderRadius: '999px' }}>
-                        - ₹{exp.amount.toLocaleString('en-IN')}
-                      </span>
-                    </li>
+                    <tr key={exp.id} className="border-b border-outline-variant/10 hover:bg-surface-container-low transition-colors group">
+                      <td className="py-3 px-5">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded bg-error-container text-on-error-container flex items-center justify-center shrink-0">
+                            <span className="material-symbols-outlined text-[16px]">payments</span>
+                          </div>
+                          <div>
+                            <p className="text-on-surface font-medium truncate w-40 md:w-56">{exp.description}</p>
+                            <p className="text-on-surface-variant text-label-sm">{new Date(exp.date).toLocaleDateString('en-IN')}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="py-3 px-5 text-right text-error font-bold">
+                        -₹{exp.amount.toLocaleString('en-IN')}
+                      </td>
+                    </tr>
                   ))}
-                </ul>
-              )}
-            </Card>
-
-            <Card glass style={{ padding: '2rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
-                <div style={{ padding: '0.5rem', background: 'rgba(16, 185, 129, 0.1)', borderRadius: '8px', color: 'var(--success)' }}>
-                  <FileText size={20} />
-                </div>
-                <h2 style={{ fontSize: '1.2rem', fontWeight: 700 }}>Latest Progress Reports</h2>
-              </div>
-
-              {recentDprs.length === 0 ? (
-                <div style={{ textAlign: 'center', padding: '2rem 0', color: 'var(--text-muted)' }}>
-                  <p>No DPRs submitted yet.</p>
-                </div>
-              ) : (
-                <ul style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                  {recentDprs.map(dpr => (
-                    <li key={dpr.id} style={{ borderBottom: '1px solid var(--border)', paddingBottom: '0.75rem' }}>
-                      <p style={{ fontWeight: 700, fontSize: '0.85rem', color: 'var(--primary)', marginBottom: '0.25rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                        {new Date(dpr.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
-                      </p>
-                      <p style={{ fontSize: '0.95rem', color: 'var(--text-main)', lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                        {dpr.summary}
-                      </p>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </Card>
+                </tbody>
+              </table>
+            )}
           </div>
-        </>
-      )}
+          <div className="p-3 border-t border-outline-variant/20 bg-surface-bright text-center">
+            <Link href="/dashboard/expenses" className="text-primary-container font-label-sm text-label-sm font-semibold hover:underline">View All Expenses</Link>
+          </div>
+        </div>
+
+        {/* Latest Progress Reports */}
+        <div className="bg-surface-container-lowest rounded-xl border border-outline-variant/30 p-0 flex flex-col shadow-sm overflow-hidden">
+          <div className="p-5 border-b border-outline-variant/20 flex justify-between items-center bg-surface-container-low/50">
+            <h3 className="font-headline-md text-headline-md text-on-surface">Latest DPRs</h3>
+            <button className="text-on-surface-variant hover:text-on-surface transition-colors">
+              <span className="material-symbols-outlined">more_horiz</span>
+            </button>
+          </div>
+          <div className="p-0">
+            {recentDprs.length === 0 ? (
+              <div className="p-8 text-center text-on-surface-variant font-body-md">No DPRs submitted yet.</div>
+            ) : (
+              <div className="flex flex-col">
+                {recentDprs.map(dpr => (
+                  <div key={dpr.id} className="p-5 border-b border-outline-variant/10 hover:bg-surface-container-low transition-colors flex gap-4">
+                    <div className="w-8 h-8 rounded bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0 mt-1">
+                      <span className="material-symbols-outlined text-[16px]">description</span>
+                    </div>
+                    <div>
+                      <p className="text-on-surface font-medium mb-1">{new Date(dpr.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+                      <p className="text-on-surface-variant text-sm line-clamp-2">{dpr.summary}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          <div className="p-3 border-t border-outline-variant/20 bg-surface-bright text-center mt-auto">
+            <Link href="/dashboard/dpr" className="text-primary-container font-label-sm text-label-sm font-semibold hover:underline">View All DPRs</Link>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

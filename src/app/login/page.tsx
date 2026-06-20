@@ -1,9 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Card } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
 import { supabase } from '@/lib/supabase';
 import Image from 'next/image';
 
@@ -36,66 +33,108 @@ export default function LoginPage() {
     }
 
     if (data?.user) {
-      // Use hard redirect to avoid middleware cookie timing issues
       window.location.href = '/dashboard';
     }
   };
 
   return (
-    <main style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', backgroundColor: 'var(--background)' }}>
-      <Card glass style={{ width: '100%', maxWidth: '420px', padding: '2.5rem' }}>
-        <div style={{ textAlign: 'center', marginBottom: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <Image src="/logo.png" alt="Lines & Thoughts" width={320} height={120} style={{ objectFit: 'contain', marginBottom: '1.5rem' }} />
-          <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem' }}>Sign in to your dashboard</p>
+    <main className="min-h-screen flex items-center justify-center bg-background relative overflow-hidden px-4">
+      {/* Decorative background elements */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary-container/20 rounded-full blur-[100px] pointer-events-none transform translate-x-1/3 -translate-y-1/3"></div>
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-secondary-container/20 rounded-full blur-[100px] pointer-events-none transform -translate-x-1/3 translate-y-1/3"></div>
+      
+      <div className="bg-surface-container-lowest/70 backdrop-blur-xl border border-outline-variant/30 rounded-2xl w-full max-w-md p-8 md:p-10 shadow-2xl relative z-10">
+        
+        <div className="flex flex-col items-center mb-8">
+          <div className="w-full flex justify-center mb-4">
+            <Image 
+              src="/logo.png" 
+              alt="Lines & Thoughts" 
+              width={240} 
+              height={80} 
+              className="object-contain drop-shadow-sm"
+              priority
+            />
+          </div>
+          <p className="font-label-md text-label-md text-on-surface-variant text-center mt-2 tracking-wide uppercase">
+            Construction Management
+          </p>
         </div>
 
-        <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <Input
-            label="Email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            placeholder="admin@example.com"
-          />
-          <Input
-            label="Password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            placeholder="••••••••"
-          />
+        <form onSubmit={handleLogin} className="space-y-5">
+          <div className="space-y-1">
+            <label className="font-label-sm text-label-sm text-on-surface-variant ml-1">Email Address</label>
+            <div className="relative">
+              <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">mail</span>
+              <input 
+                type="email" 
+                required 
+                value={email} 
+                onChange={(e) => setEmail(e.target.value)} 
+                placeholder="admin@example.com"
+                className="w-full pl-11 pr-4 py-3 bg-surface-container-low border border-outline-variant/50 rounded-xl focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-all font-body-md text-on-surface"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-1">
+            <label className="font-label-sm text-label-sm text-on-surface-variant ml-1">Password</label>
+            <div className="relative">
+              <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">lock</span>
+              <input 
+                type="password" 
+                required 
+                value={password} 
+                onChange={(e) => setPassword(e.target.value)} 
+                placeholder="••••••••"
+                className="w-full pl-11 pr-4 py-3 bg-surface-container-low border border-outline-variant/50 rounded-xl focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-all font-body-md text-on-surface"
+              />
+            </div>
+          </div>
 
           {error === 'EMAIL_NOT_CONFIRMED' && (
-            <div style={{ backgroundColor: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.4)', borderRadius: '8px', padding: '1rem', fontSize: '0.875rem', lineHeight: 1.7 }}>
-              <strong>⚠️ Email not confirmed!</strong><br />
-              Go to <strong>Supabase → Authentication → Users</strong> → click on your user → click <strong>&quot;Send confirmation email&quot;</strong> or delete and recreate the user.
+            <div className="p-4 bg-error-container/20 border border-error/30 rounded-xl flex items-start gap-3">
+              <span className="material-symbols-outlined text-error mt-0.5">warning</span>
+              <p className="font-body-md text-[13px] text-on-surface-variant leading-relaxed">
+                <strong className="text-error font-semibold">Email not confirmed!</strong><br/>
+                Please check your inbox or go to Supabase → Authentication to verify your account.
+              </p>
             </div>
           )}
 
           {error === 'INVALID_CREDENTIALS' && (
-            <div style={{ backgroundColor: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: '8px', padding: '0.75rem 1rem', color: 'var(--danger)', fontSize: '0.875rem' }}>
-              ❌ Wrong email or password. Please check and try again.
+            <div className="p-3 bg-error-container/20 border border-error/30 rounded-xl flex items-center gap-2 text-error font-label-md text-label-md">
+              <span className="material-symbols-outlined text-[18px]">error</span>
+              Incorrect email or password.
             </div>
           )}
 
           {error && error !== 'EMAIL_NOT_CONFIRMED' && error !== 'INVALID_CREDENTIALS' && (
-            <div style={{ backgroundColor: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: '8px', padding: '0.75rem 1rem', color: 'var(--danger)', fontSize: '0.875rem' }}>
-              ❌ {error}
+            <div className="p-3 bg-error-container/20 border border-error/30 rounded-xl flex items-center gap-2 text-error font-label-md text-label-md">
+              <span className="material-symbols-outlined text-[18px]">error</span>
+              {error}
             </div>
           )}
 
-          <Button
-            variant="primary"
-            type="submit"
+          <button 
+            type="submit" 
             disabled={loading}
-            style={{ width: '100%', marginTop: '0.5rem', padding: '0.75rem' }}
+            className="w-full py-3.5 mt-2 bg-primary-container text-on-primary font-label-md text-label-md rounded-xl hover:bg-primary transition-colors shadow-lg shadow-primary-container/20 flex items-center justify-center gap-2"
           >
-            {loading ? 'Signing in...' : 'Sign In →'}
-          </Button>
+            {loading ? (
+              <>
+                <span className="material-symbols-outlined animate-spin text-[20px]">progress_activity</span>
+                Signing in...
+              </>
+            ) : (
+              <>
+                Sign In
+                <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
+              </>
+            )}
+          </button>
         </form>
-      </Card>
+      </div>
     </main>
   );
 }

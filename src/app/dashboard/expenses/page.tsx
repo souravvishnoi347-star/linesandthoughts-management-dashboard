@@ -1,11 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Card } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
 import { supabase } from '@/lib/supabase';
-import { Plus, IndianRupee, Search, Calendar } from 'lucide-react';
 
 interface Expense {
   id: string;
@@ -91,175 +87,159 @@ export default function ExpensesPage() {
 
   const totalExpense = expenses.reduce((sum, exp) => sum + Number(exp.amount), 0);
 
+  const getCategoryIcon = (cat: string) => {
+    if (cat.includes('Food') || cat.includes('Meal')) return 'restaurant';
+    if (cat.includes('Fuel') || cat.includes('Travel')) return 'local_gas_station';
+    if (cat.includes('Tool') || cat.includes('Hardware')) return 'hardware';
+    if (cat.includes('Labor')) return 'engineering';
+    return 'receipt_long';
+  };
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+    <div className="p-container-padding flex-1 overflow-x-hidden flex flex-col gap-6">
+      
+      {/* Page Header */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mt-2 mb-2">
         <div>
-          <h1 style={{ fontSize: '2.5rem', fontWeight: 800, letterSpacing: '-1px' }}>Petty Cash / Expenses</h1>
-          <p className="text-muted">Track day-to-day site expenses and miscellaneous costs</p>
-        </div>
-        <Button variant="primary" onClick={() => setShowAddForm(!showAddForm)}>
-          <Plus size={18} style={{ marginRight: '8px' }} />
-          {showAddForm ? 'Cancel' : 'Log Expense'}
-        </Button>
-      </div>
-
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem' }}>
-        <div className="metric-card bg-gradient-3">
-          <p style={{ fontSize: '0.9rem', opacity: 0.9, fontWeight: 500, marginBottom: '0.25rem' }}>Total Petty Cash Spent</p>
-          <p style={{ fontSize: '2.5rem', fontWeight: 800, letterSpacing: '-1px' }}>₹{totalExpense.toLocaleString('en-IN')}</p>
-        </div>
-        <div className="metric-card bg-gradient-1">
-          <p style={{ fontSize: '0.9rem', opacity: 0.9, fontWeight: 500, marginBottom: '0.25rem' }}>Transactions Logged</p>
-          <p style={{ fontSize: '2.5rem', fontWeight: 800, letterSpacing: '-1px' }}>{expenses.length}</p>
+          <h2 className="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg font-black text-on-surface tracking-tight">Petty Cash</h2>
+          <p className="text-on-surface-variant mt-1">Track day-to-day site expenses and miscellaneous costs.</p>
         </div>
       </div>
 
-      {showAddForm && (
-        <Card glass style={{ padding: '2rem', animation: 'fadeIn 0.3s ease' }}>
-          <h2 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <IndianRupee size={20} color="var(--primary)" /> Log Daily Expense
-          </h2>
-          <form onSubmit={handleAddExpense} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-            <div style={{ gridColumn: '1 / -1' }}>
-              <Input 
-                label="Expense Description (What was it for?)" 
-                required 
-                value={description} 
-                onChange={(e) => setDescription(e.target.value)} 
-                placeholder="e.g. Tea/Snacks for labor, Site travel auto fare"
-              />
+      {/* Prominent Total Display */}
+      <section className="bg-surface-container-lowest/70 backdrop-blur-md border border-outline-variant/30 rounded-xl p-6 relative overflow-hidden shadow-sm">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-error-container/20 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none"></div>
+        <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <p className="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-1">Total Expenses Logged</p>
+            <h3 className="font-display-lg text-display-lg text-error tracking-tight">₹{totalExpense.toLocaleString('en-IN')}</h3>
+          </div>
+          <div className="flex gap-3">
+            <div className="bg-surface-container px-4 py-2 rounded-lg border border-outline-variant/20">
+              <p className="font-label-sm text-label-sm text-on-surface-variant">Transactions</p>
+              <p className="font-headline-md text-headline-md text-on-surface">{expenses.length}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Split Layout for Desktop, Stacked for Mobile */}
+      <div className="flex flex-col md:flex-row gap-6 flex-1">
+        
+        {/* Left Form (or Mobile Top) */}
+        <aside className="md:w-1/3 bg-surface-container-lowest md:rounded-xl border border-outline-variant/20 p-6 shadow-sm rounded-xl h-fit">
+          <div className="flex justify-between items-center mb-6">
+            <h4 className="font-headline-md text-headline-md text-on-surface">Log Expense</h4>
+          </div>
+          <form onSubmit={handleAddExpense} className="space-y-5">
+            <div>
+              <label className="block font-label-sm text-label-sm text-on-surface-variant mb-1">Amount (₹)</label>
+              <div className="relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-body-lg text-body-lg">₹</span>
+                <input required type="number" step="0.01" value={amount} onChange={(e) => setAmount(e.target.value)} className="w-full bg-surface pl-8 pr-4 py-3 rounded-lg border border-outline-variant/50 focus:border-primary-container focus:ring-1 focus:ring-primary-container font-body-lg text-body-lg text-on-surface transition-colors" placeholder="0.00" />
+              </div>
             </div>
             
-            <Input 
-              label="Amount (₹)" 
-              type="number" 
-              required 
-              value={amount} 
-              onChange={(e) => setAmount(e.target.value)} 
-            />
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-              <label style={{ fontSize: '0.875rem', fontWeight: 500 }}>Category</label>
-              <select 
-                className="input-field" 
-                value={category} 
-                onChange={(e) => setCategory(e.target.value)}
-                style={{ height: '42px' }}
-              >
-                <option>Food & Refreshments</option>
-                <option>Fuel / Travel</option>
-                <option>Small Tools / Hardware</option>
-                <option>Daily Wage Labor</option>
-                <option>Stationery & Print</option>
-                <option>Other</option>
-              </select>
+            <div>
+              <label className="block font-label-sm text-label-sm text-on-surface-variant mb-1">Description</label>
+              <textarea required value={description} onChange={(e) => setDescription(e.target.value)} className="w-full bg-surface px-4 py-3 rounded-lg border border-outline-variant/50 focus:border-primary-container focus:ring-1 focus:ring-primary-container font-body-md text-body-md text-on-surface transition-colors resize-none" placeholder="What was this for?" rows={2}></textarea>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-              <label style={{ fontSize: '0.875rem', fontWeight: 500 }}>Project / Site</label>
-              <select 
-                className="input-field" 
-                value={projectId} 
-                onChange={(e) => setProjectId(e.target.value)}
-                style={{ height: '42px' }}
-                required={projects.length > 0}
-                disabled={projects.length === 0}
-              >
-                {projects.length === 0 ? (
-                  <option value="">No projects available (Global)</option>
-                ) : (
-                  <option value="" disabled>Select a project</option>
-                )}
-                {projects.map(p => (
-                  <option key={p.id} value={p.id}>{p.name}</option>
-                ))}
-              </select>
+            <div>
+              <label className="block font-label-sm text-label-sm text-on-surface-variant mb-1">Category</label>
+              <div className="relative">
+                <select value={category} onChange={(e) => setCategory(e.target.value)} className="w-full bg-surface pl-4 pr-10 py-3 rounded-lg border border-outline-variant/50 focus:border-primary-container focus:ring-1 focus:ring-primary-container font-body-md text-body-md text-on-surface appearance-none transition-colors h-[50px]">
+                  <option>Food & Refreshments</option>
+                  <option>Fuel / Travel</option>
+                  <option>Small Tools / Hardware</option>
+                  <option>Daily Wage Labor</option>
+                  <option>Stationery & Print</option>
+                  <option>Other</option>
+                </select>
+                <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
+              </div>
             </div>
 
-            <Input 
-              label="Date" 
-              type="date" 
-              required 
-              value={date} 
-              onChange={(e) => setDate(e.target.value)} 
-            />
-
-            <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
-              <Button type="submit" variant="primary" disabled={submitting}>
-                {submitting ? 'Saving...' : 'Save Expense'}
-              </Button>
+            <div>
+              <label className="block font-label-sm text-label-sm text-on-surface-variant mb-1">Project / Site</label>
+              <div className="relative">
+                <select value={projectId} onChange={(e) => setProjectId(e.target.value)} className="w-full bg-surface pl-4 pr-10 py-3 rounded-lg border border-outline-variant/50 focus:border-primary-container focus:ring-1 focus:ring-primary-container font-body-md text-body-md text-on-surface appearance-none transition-colors h-[50px]">
+                  {projects.length === 0 ? <option value="">No projects available (Global)</option> : <option value="" disabled>Select a project</option>}
+                  {projects.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
+                </select>
+                <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
+              </div>
             </div>
+
+            <div>
+              <label className="block font-label-sm text-label-sm text-on-surface-variant mb-1">Date</label>
+              <input type="date" required value={date} onChange={(e) => setDate(e.target.value)} className="w-full bg-surface px-4 py-3 rounded-lg border border-outline-variant/50 focus:border-primary-container focus:ring-1 focus:ring-primary-container font-body-md text-body-md text-on-surface transition-colors" />
+            </div>
+
+            <button type="submit" disabled={submitting} className="w-full py-3.5 bg-primary-container text-on-primary rounded-lg font-label-md text-label-md hover:bg-primary-container/90 transition-colors mt-6 shadow-md">
+              {submitting ? 'Saving...' : 'Save Expense'}
+            </button>
           </form>
-        </Card>
-      )}
+        </aside>
 
-      <Card glass style={{ overflow: 'hidden' }}>
-        <div style={{ padding: '1.5rem', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h2 style={{ fontSize: '1.2rem', fontWeight: 700 }}>Recent Expenses</h2>
-          <div style={{ position: 'relative' }}>
-            <Search size={16} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
-            <input 
-              type="text" 
-              placeholder="Search expenses..." 
-              className="input-field"
-              style={{ paddingLeft: '2.2rem', padding: '0.5rem 0.5rem 0.5rem 2.2rem', width: '250px' }}
-            />
+        {/* Right: Recent Spends List */}
+        <section className="md:w-2/3 bg-surface-container-lowest/70 backdrop-blur-md rounded-xl flex flex-col h-full min-h-[500px] border border-outline-variant/30 shadow-sm">
+          <div className="px-6 py-5 border-b border-outline-variant/30 flex justify-between items-center bg-surface-container-low/50 rounded-t-xl">
+            <h4 className="font-headline-md text-headline-md text-on-surface">Recent Activity</h4>
+            <div className="relative w-48 hidden sm:block">
+              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+              <input type="text" placeholder="Search..." className="w-full pl-9 pr-3 py-1.5 bg-surface border border-outline-variant rounded-lg text-body-sm focus:outline-none focus:border-secondary" />
+            </div>
           </div>
-        </div>
-        
-        {loading ? (
-          <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>Loading expenses...</div>
-        ) : expenses.length === 0 ? (
-          <div style={{ padding: '4rem 2rem', textAlign: 'center', color: 'var(--text-muted)' }}>
-            <IndianRupee size={48} style={{ opacity: 0.2, margin: '0 auto 1rem auto' }} />
-            <p>No petty cash expenses logged yet.</p>
-            <Button variant="secondary" onClick={() => setShowAddForm(true)} style={{ marginTop: '1rem' }}>
-              Log First Expense
-            </Button>
-          </div>
-        ) : (
-          <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-              <thead style={{ backgroundColor: 'rgba(0,0,0,0.02)' }}>
-                <tr>
-                  <th style={{ padding: '1rem 1.5rem', fontWeight: 600, fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Date</th>
-                  <th style={{ padding: '1rem 1.5rem', fontWeight: 600, fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Description</th>
-                  <th style={{ padding: '1rem 1.5rem', fontWeight: 600, fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Category</th>
-                  <th style={{ padding: '1rem 1.5rem', fontWeight: 600, fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Site</th>
-                  <th style={{ padding: '1rem 1.5rem', fontWeight: 600, fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', textAlign: 'right' }}>Amount</th>
-                </tr>
-              </thead>
-              <tbody>
-                {expenses.map((exp) => (
-                  <tr key={exp.id} style={{ borderBottom: '1px solid var(--border)' }}>
-                    <td style={{ padding: '1rem 1.5rem', fontSize: '0.95rem' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <Calendar size={14} color="var(--text-muted)" />
-                        {new Date(exp.date).toLocaleDateString('en-IN')}
+          
+          <div className="flex-1 overflow-y-auto p-2">
+            {loading ? (
+              <div className="p-8 text-center text-on-surface-variant">Loading expenses...</div>
+            ) : expenses.length === 0 ? (
+              <div className="p-16 text-center text-on-surface-variant flex flex-col items-center">
+                 <span className="material-symbols-outlined text-[48px] opacity-20 mb-4">payments</span>
+                 <p>No petty cash expenses logged yet.</p>
+              </div>
+            ) : (
+              <>
+                {/* Table Header (Desktop) */}
+                <div className="hidden md:grid grid-cols-12 gap-4 px-4 py-3 bg-surface-container-low rounded-lg mb-2 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
+                  <div className="col-span-2">Date</div>
+                  <div className="col-span-5">Description & Site</div>
+                  <div className="col-span-3">Category</div>
+                  <div className="col-span-2 text-right">Amount</div>
+                </div>
+
+                {/* List Items */}
+                <div className="space-y-1">
+                  {expenses.map(exp => (
+                    <div key={exp.id} className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-4 px-4 py-4 md:py-3 hover:bg-surface-variant/30 rounded-lg transition-colors border-b border-outline-variant/10 md:border-none items-center relative group">
+                      <div className="col-span-1 md:col-span-2 font-label-sm text-label-sm text-on-surface-variant md:text-on-surface order-2 md:order-1">
+                        {new Date(exp.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
                       </div>
-                    </td>
-                    <td style={{ padding: '1rem 1.5rem', fontWeight: 600, color: 'var(--text-main)' }}>
-                      {exp.description}
-                    </td>
-                    <td style={{ padding: '1rem 1.5rem', fontSize: '0.95rem', color: 'var(--text-muted)' }}>
-                      {exp.category}
-                    </td>
-                    <td style={{ padding: '1rem 1.5rem', fontSize: '0.95rem' }}>
-                      <span style={{ backgroundColor: 'rgba(79, 70, 229, 0.1)', color: 'var(--primary)', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.8rem', fontWeight: 600 }}>
-                        {exp.projects?.name || 'N/A'}
-                      </span>
-                    </td>
-                    <td style={{ padding: '1rem 1.5rem', fontWeight: 700, color: 'var(--danger)', textAlign: 'right' }}>
-                      - ₹{exp.amount.toLocaleString('en-IN')}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                      
+                      <div className="col-span-1 md:col-span-5 flex flex-col order-1 md:order-2">
+                        <span className="font-body-md text-body-md text-on-surface font-medium">{exp.description}</span>
+                        <span className="font-label-sm text-label-sm text-on-surface-variant">{exp.projects?.name || 'Central / Generic'}</span>
+                      </div>
+                      
+                      <div className="col-span-1 md:col-span-3 order-3 mt-1 md:mt-0">
+                        <span className="inline-flex items-center px-2 py-1 rounded-md bg-surface-container border border-outline-variant/20 font-label-sm text-label-sm text-on-surface-variant">
+                          <span className="material-symbols-outlined text-[14px] mr-1">{getCategoryIcon(exp.category)}</span> {exp.category}
+                        </span>
+                      </div>
+                      
+                      <div className="col-span-1 md:col-span-2 text-right font-label-md text-label-md text-error order-4 md:order-4 absolute md:relative right-4 md:right-0 mt-1 md:mt-0">
+                        -₹{exp.amount.toLocaleString('en-IN')}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
-        )}
-      </Card>
+        </section>
+      </div>
     </div>
   );
 }

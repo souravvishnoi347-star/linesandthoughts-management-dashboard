@@ -1,11 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Card } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
 import { supabase } from '@/lib/supabase';
-import { Plus, Briefcase, IndianRupee, Search } from 'lucide-react';
 
 interface Vendor {
   id: string;
@@ -39,7 +35,6 @@ export default function VendorsPage() {
 
   async function fetchVendors() {
     setLoading(true);
-    // Fetch vendors and their payouts
     const { data: vendorsData } = await supabase.from('vendors').select('*').order('name');
     const { data: paymentsData } = await supabase.from('vendor_payments').select('vendor_id, amount');
 
@@ -89,98 +84,165 @@ export default function VendorsPage() {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+    <div className="p-container-padding flex-1 overflow-x-hidden space-y-6">
+      {/* Page Header */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-2">
         <div>
-          <h1 style={{ fontSize: '2.5rem', fontWeight: 800, letterSpacing: '-1px' }}>Vendors / Contractors</h1>
-          <p className="text-muted">Manage sub-contractors and track business payouts</p>
+          <h1 className="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-on-surface mb-1">Vendors & Sub-contractors</h1>
+          <p className="font-body-md text-body-md text-on-surface-variant mt-1">Manage vendor directory and payouts.</p>
         </div>
-        <Button variant="primary" onClick={() => setShowAddVendor(!showAddVendor)}>
-          <Plus size={18} style={{ marginRight: '8px' }} />
-          {showAddVendor ? 'Cancel' : 'Add New Vendor'}
-        </Button>
+        <div className="flex gap-3">
+          <button className="bg-surface-container-highest text-on-surface font-label-md text-label-md px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-surface-variant transition-colors border border-outline-variant">
+            <span className="material-symbols-outlined text-[18px]">filter_list</span>
+            Filter
+          </button>
+          <button onClick={() => setShowAddVendor(!showAddVendor)} className="bg-primary-container text-on-primary font-label-md text-label-md px-4 py-2 rounded-lg font-bold flex items-center gap-2 shadow-xl shadow-primary-container/10">
+            <span className="material-symbols-outlined text-[18px]">{showAddVendor ? 'close' : 'person_add'}</span>
+            {showAddVendor ? 'Cancel' : 'Add Vendor'}
+          </button>
+        </div>
+      </div>
+
+      {/* Category Tags */}
+      <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+        <button className="whitespace-nowrap px-4 py-2 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-label-md border border-secondary-container">All Vendors</button>
+        <button className="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface font-label-md text-label-md border border-outline-variant hover:bg-surface-variant transition-colors">Painters</button>
+        <button className="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface font-label-md text-label-md border border-outline-variant hover:bg-surface-variant transition-colors">Plumbers</button>
+        <button className="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface font-label-md text-label-md border border-outline-variant hover:bg-surface-variant transition-colors">Electricians</button>
+        <button className="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface font-label-md text-label-md border border-outline-variant hover:bg-surface-variant transition-colors">Civil</button>
+        <button className="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface font-label-md text-label-md border border-outline-variant hover:bg-surface-variant transition-colors">Suppliers</button>
       </div>
 
       {showAddVendor && (
-        <Card glass style={{ padding: '2rem', animation: 'fadeIn 0.3s ease' }}>
-          <h2 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Briefcase size={20} color="var(--primary)" /> Register Vendor
+        <div className="bg-surface-container-lowest rounded-xl p-6 border border-outline-variant/30 mb-8 animate-in fade-in slide-in-from-top-4">
+          <h2 className="font-headline-md text-headline-md text-on-surface mb-4 flex items-center gap-2">
+            <span className="material-symbols-outlined text-primary">person_add</span> Register Vendor
           </h2>
-          <form onSubmit={handleAddVendor} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr auto', gap: '1rem', alignItems: 'flex-end' }}>
-            <div><Input label="Vendor Name / Agency" required value={name} onChange={(e) => setName(e.target.value)} /></div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-              <label style={{ fontSize: '0.875rem', fontWeight: 500 }}>Category</label>
-              <select className="input-field" value={category} onChange={(e) => setCategory(e.target.value)} style={{ height: '42px' }}>
+          <form onSubmit={handleAddVendor} className="flex flex-col md:flex-row gap-4 items-end">
+            <div className="flex-1 w-full">
+              <label className="block text-label-sm font-label-sm text-on-surface-variant mb-1">Vendor Name / Agency</label>
+              <input required value={name} onChange={(e) => setName(e.target.value)} className="w-full px-4 py-2 rounded-lg border border-outline-variant/50 focus:border-secondary outline-none bg-surface-container-lowest" />
+            </div>
+            <div className="w-full md:w-48">
+              <label className="block text-label-sm font-label-sm text-on-surface-variant mb-1">Category</label>
+              <select value={category} onChange={(e) => setCategory(e.target.value)} className="w-full px-4 py-2 rounded-lg border border-outline-variant/50 focus:border-secondary outline-none bg-white h-[42px]">
                 <option>Painter</option><option>Sanitary</option><option>Electrician</option><option>Civil Contractor</option><option>Material Supplier</option><option>Other</option>
               </select>
             </div>
-            <div><Input label="Contact / Phone" value={contact} onChange={(e) => setContact(e.target.value)} /></div>
-            <Button type="submit" variant="primary" style={{ height: '42px', marginBottom: '4px' }}>Save Vendor</Button>
+            <div className="flex-1 w-full">
+              <label className="block text-label-sm font-label-sm text-on-surface-variant mb-1">Contact Info</label>
+              <input value={contact} onChange={(e) => setContact(e.target.value)} className="w-full px-4 py-2 rounded-lg border border-outline-variant/50 focus:border-secondary outline-none bg-surface-container-lowest" />
+            </div>
+            <button type="submit" className="bg-secondary text-on-secondary px-6 py-2.5 rounded-lg font-label-md hover:bg-secondary/90 w-full md:w-auto h-[42px]">
+              Save Vendor
+            </button>
           </form>
-        </Card>
+        </div>
       )}
 
       {showAddPayment && (
-        <Card glass style={{ padding: '2rem', animation: 'fadeIn 0.3s ease', borderLeft: '4px solid var(--danger)' }}>
-          <h2 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <IndianRupee size={20} color="var(--danger)" /> Record Payout (Expense)
+        <div className="bg-surface-container-lowest rounded-xl p-6 border border-outline-variant/30 mb-8 animate-in fade-in slide-in-from-top-4 border-l-4 border-l-error">
+          <h2 className="font-headline-md text-headline-md text-on-surface mb-4 flex items-center gap-2">
+            <span className="material-symbols-outlined text-error">payments</span> Record Payout (Expense)
           </h2>
-          <form onSubmit={handleAddPayment} style={{ display: 'grid', gridTemplateColumns: '1fr 2fr 1fr auto', gap: '1rem', alignItems: 'flex-end' }}>
-            <div><Input label="Amount Paid (₹)" type="number" required value={amount} onChange={(e) => setAmount(e.target.value)} /></div>
-            <div><Input label="Description / Against Bill" required value={description} onChange={(e) => setDescription(e.target.value)} /></div>
-            <div><Input label="Date" type="date" required value={paymentDate} onChange={(e) => setPaymentDate(e.target.value)} /></div>
-            <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '4px' }}>
-              <Button type="button" onClick={() => setShowAddPayment(null)} style={{ height: '42px', backgroundColor: 'transparent', color: 'var(--text-main)', border: '1px solid var(--border)' }}>Cancel</Button>
-              <Button type="submit" style={{ height: '42px', backgroundColor: 'var(--danger)', color: 'white', border: 'none' }}>Save</Button>
+          <form onSubmit={handleAddPayment} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+            <div>
+              <label className="block text-label-sm font-label-sm text-on-surface-variant mb-1">Amount Paid (₹)</label>
+              <input type="number" required value={amount} onChange={(e) => setAmount(e.target.value)} className="w-full px-4 py-2 rounded-lg border border-outline-variant/50 focus:border-secondary outline-none" />
+            </div>
+            <div className="md:col-span-1">
+              <label className="block text-label-sm font-label-sm text-on-surface-variant mb-1">Description / Bill Info</label>
+              <input required value={description} onChange={(e) => setDescription(e.target.value)} className="w-full px-4 py-2 rounded-lg border border-outline-variant/50 focus:border-secondary outline-none" />
+            </div>
+            <div>
+              <label className="block text-label-sm font-label-sm text-on-surface-variant mb-1">Date</label>
+              <input type="date" required value={paymentDate} onChange={(e) => setPaymentDate(e.target.value)} className="w-full px-4 py-2 rounded-lg border border-outline-variant/50 focus:border-secondary outline-none" />
+            </div>
+            <div className="flex gap-2">
+              <button type="button" onClick={() => setShowAddPayment(null)} className="flex-1 px-4 py-2 rounded-lg border border-outline-variant font-label-md text-on-surface-variant hover:bg-surface-container-low transition-colors">Cancel</button>
+              <button type="submit" className="flex-1 bg-error text-on-error px-4 py-2 rounded-lg font-label-md hover:bg-error/90 transition-colors">Save</button>
             </div>
           </form>
-        </Card>
+        </div>
       )}
 
-      <Card glass style={{ overflow: 'hidden' }}>
-        <div style={{ padding: '1.5rem', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h2 style={{ fontSize: '1.2rem', fontWeight: 700 }}>Vendor Directory & Payouts</h2>
-          <div style={{ display: 'flex', gap: '1rem' }}>
-            <div style={{ position: 'relative' }}>
-              <Search size={16} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
-              <input type="text" placeholder="Search vendors..." className="input-field" style={{ paddingLeft: '2.2rem', padding: '0.5rem 0.5rem 0.5rem 2.2rem', width: '250px' }} />
-            </div>
-          </div>
+      {/* Vendor Directory Table */}
+      <div className="bg-surface-container-lowest/70 backdrop-blur-md rounded-xl border border-outline-variant/30 shadow-sm overflow-hidden flex flex-col">
+        {/* Desktop Table View */}
+        <div className="hidden md:block overflow-x-auto">
+          {loading ? (
+             <div className="p-16 text-center text-on-surface-variant">Loading records...</div>
+          ) : (
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-surface-container-low border-b border-outline-variant/30">
+                  <th className="p-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Vendor Name</th>
+                  <th className="p-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Category</th>
+                  <th className="p-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Total Payouts</th>
+                  <th className="p-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Contact</th>
+                  <th className="p-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-outline-variant/20">
+                {vendors.map(vendor => (
+                  <tr key={vendor.id} className="hover:bg-surface-container-lowest/50 transition-colors group">
+                    <td className="p-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface font-label-md text-label-md font-bold uppercase">
+                          {vendor.name.substring(0, 2)}
+                        </div>
+                        <div>
+                          <p className="font-label-md text-label-md text-on-surface">{vendor.name}</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="p-4">
+                      <span className="inline-flex items-center px-2 py-1 rounded-md bg-surface-container text-on-surface font-label-sm text-label-sm">{vendor.category}</span>
+                    </td>
+                    <td className="p-4">
+                      <span className="font-label-md text-label-md text-error">₹{vendor.total_paid.toLocaleString('en-IN')}</span>
+                    </td>
+                    <td className="p-4">
+                      <span className="font-body-md text-body-md text-on-surface-variant">{vendor.contact_info || 'N/A'}</span>
+                    </td>
+                    <td className="p-4 text-right">
+                      <button onClick={() => setShowAddPayment(vendor.id)} className="bg-primary-container text-on-primary font-label-sm text-label-sm px-3 py-1.5 rounded-lg font-bold hover:opacity-90 transition-opacity">Pay Vendor</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
-        
-        {loading ? (
-          <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>Loading records...</div>
-        ) : vendors.length === 0 ? (
-          <div style={{ padding: '4rem 2rem', textAlign: 'center', color: 'var(--text-muted)' }}>
-            <Briefcase size={48} style={{ opacity: 0.2, margin: '0 auto 1rem auto' }} />
-            <p>No vendors registered yet.</p>
-          </div>
-        ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.5rem', padding: '1.5rem' }}>
-            {vendors.map(vendor => (
-              <div key={vendor.id} style={{ border: '1px solid var(--border)', borderRadius: '16px', padding: '1.5rem', backgroundColor: 'white', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.02)', position: 'relative', overflow: 'hidden' }}>
-                <div style={{ position: 'absolute', top: 0, left: 0, width: '4px', height: '100%', backgroundColor: 'var(--danger)' }} />
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                  <h3 style={{ fontSize: '1.1rem', fontWeight: 700 }}>{vendor.name}</h3>
-                  <span style={{ fontSize: '0.7rem', fontWeight: 700, backgroundColor: 'var(--background)', padding: '0.2rem 0.5rem', borderRadius: '4px', color: 'var(--text-muted)', textTransform: 'uppercase' }}>
-                    {vendor.category}
-                  </span>
-                </div>
-                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1.5rem', marginTop: '0.25rem' }}>{vendor.contact_info || 'No contact provided'}</p>
-                
-                <div style={{ backgroundColor: 'rgba(244, 63, 94, 0.05)', padding: '1rem', borderRadius: '10px', marginBottom: '1.5rem' }}>
-                  <p style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Total Business / Payouts</p>
-                  <p style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--danger)' }}>₹{vendor.total_paid.toLocaleString('en-IN')}</p>
-                </div>
 
-                <Button onClick={() => setShowAddPayment(vendor.id)} style={{ width: '100%', backgroundColor: 'rgba(0,0,0,0.03)', color: 'var(--text-main)', border: '1px solid var(--border)' }}>
-                  + Pay Vendor
-                </Button>
+        {/* Mobile List View */}
+        <div className="md:hidden flex flex-col">
+          {loading ? (
+             <div className="p-8 text-center text-on-surface-variant">Loading records...</div>
+          ) : vendors.map(vendor => (
+            <div key={vendor.id} className="p-4 border-b border-outline-variant/20 hover:bg-surface-container-low transition-colors relative overflow-hidden group">
+              <div className="flex justify-between items-start mb-2">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center font-bold text-sm uppercase text-on-surface">
+                    {vendor.name.substring(0, 2)}
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-on-surface text-[16px]">{vendor.name}</h3>
+                    <p className="font-label-sm text-label-sm text-on-surface-variant">{vendor.category} • {vendor.contact_info || 'N/A'}</p>
+                  </div>
+                </div>
               </div>
-            ))}
-          </div>
-        )}
-      </Card>
+              <div className="flex justify-between items-end mt-4">
+                <button onClick={() => setShowAddPayment(vendor.id)} className="bg-primary-container text-on-primary font-label-sm text-label-sm px-3 py-1.5 rounded-lg font-bold">Pay Vendor</button>
+                <div className="text-right">
+                  <p className="font-label-sm text-label-sm text-on-surface-variant uppercase text-[10px] mb-1">Total Payouts</p>
+                  <p className="font-headline-md text-[18px] text-error font-bold">₹{vendor.total_paid.toLocaleString('en-IN')}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
