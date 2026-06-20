@@ -1,6 +1,6 @@
 :root {
-  --primary: #4F46E5;      /* Indigo 600 */
-  --primary-hover: #4338CA;
+  --primary: #1e293b;      /* Slate 800 */
+  --primary-hover: #0f172a; /* Slate 900 */
   --secondary: #0ea5e9;    /* Sky 500 */
   --background: #f8fafc;   /* Slate 50 */
   --surface: #FFFFFF;
@@ -135,14 +135,14 @@ a {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--primary) 0%, #6366f1 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, #334155 100%);
   color: white;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.3);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 16px rgba(79, 70, 229, 0.4);
+  box-shadow: 0 8px 16px rgba(15, 23, 42, 0.4);
 }
 
 .input-field {
