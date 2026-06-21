@@ -19,33 +19,33 @@ export function Sidebar() {
       </div>
 
       <nav className="flex-1 overflow-y-auto px-base space-y-1">
-        <Link href="/dashboard" className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${isActive('/dashboard') ? 'border-l-4 border-secondary text-secondary-fixed font-bold bg-surface-variant/10 scale-98' : 'text-on-primary-container/70 hover:text-on-primary-container hover:bg-surface-variant/20'}`}>
-          <span className="material-symbols-outlined" data-weight={isActive('/dashboard') ? "fill" : undefined}>dashboard</span>
-          <span className="font-label-md text-label-md">Overview</span>
+        <Link href="/dashboard" className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${isActive('/dashboard') ? 'border-l-4 border-on-primary-container text-on-primary-container font-extrabold bg-white/20 scale-98' : 'text-on-primary-container/70 hover:text-on-primary-container hover:bg-white/10'}`}>
+          <span className="material-symbols-outlined" data-weight={isActive('/dashboard') ? 'fill' : 'regular'}>dashboard</span>
+          <span className="font-label-md">Overview</span>
         </Link>
-        <Link href="/dashboard/projects" className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${isActive('/dashboard/projects') ? 'border-l-4 border-secondary text-secondary-fixed font-bold bg-surface-variant/10 scale-98' : 'text-on-primary-container/70 hover:text-on-primary-container hover:bg-surface-variant/20'}`}>
-          <span className="material-symbols-outlined" data-weight={isActive('/dashboard/projects') ? "fill" : undefined}>architecture</span>
-          <span className="font-label-md text-label-md">Projects / Sites</span>
+        <Link href="/dashboard/projects" className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${isActive('/dashboard/projects') ? 'border-l-4 border-on-primary-container text-on-primary-container font-extrabold bg-white/20 scale-98' : 'text-on-primary-container/70 hover:text-on-primary-container hover:bg-white/10'}`}>
+          <span className="material-symbols-outlined" data-weight={isActive('/dashboard/projects') ? 'fill' : 'regular'}>architecture</span>
+          <span className="font-label-md">Projects / Sites</span>
         </Link>
-        <Link href="/dashboard/parties" className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${isActive('/dashboard/parties') ? 'border-l-4 border-secondary text-secondary-fixed font-bold bg-surface-variant/10 scale-98' : 'text-on-primary-container/70 hover:text-on-primary-container hover:bg-surface-variant/20'}`}>
-          <span className="material-symbols-outlined" data-weight={isActive('/dashboard/parties') ? "fill" : undefined}>groups</span>
-          <span className="font-label-md text-label-md">Parties / Clients</span>
+        <Link href="/dashboard/parties" className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${isActive('/dashboard/parties') ? 'border-l-4 border-on-primary-container text-on-primary-container font-extrabold bg-white/20 scale-98' : 'text-on-primary-container/70 hover:text-on-primary-container hover:bg-white/10'}`}>
+          <span className="material-symbols-outlined" data-weight={isActive('/dashboard/parties') ? 'fill' : 'regular'}>groups</span>
+          <span className="font-label-md">Parties / Clients</span>
         </Link>
-        <Link href="/dashboard/vendors" className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${isActive('/dashboard/vendors') ? 'border-l-4 border-secondary text-secondary-fixed font-bold bg-surface-variant/10 scale-98' : 'text-on-primary-container/70 hover:text-on-primary-container hover:bg-surface-variant/20'}`}>
-          <span className="material-symbols-outlined" data-weight={isActive('/dashboard/vendors') ? "fill" : undefined}>store</span>
-          <span className="font-label-md text-label-md">Vendors</span>
+        <Link href="/dashboard/vendors" className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${isActive('/dashboard/vendors') ? 'border-l-4 border-on-primary-container text-on-primary-container font-extrabold bg-white/20 scale-98' : 'text-on-primary-container/70 hover:text-on-primary-container hover:bg-white/10'}`}>
+          <span className="material-symbols-outlined" data-weight={isActive('/dashboard/vendors') ? 'fill' : 'regular'}>store</span>
+          <span className="font-label-md">Vendors</span>
         </Link>
-        <Link href="/dashboard/inventory" className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${isActive('/dashboard/inventory') ? 'border-l-4 border-secondary text-secondary-fixed font-bold bg-surface-variant/10 scale-98' : 'text-on-primary-container/70 hover:text-on-primary-container hover:bg-surface-variant/20'}`}>
-          <span className="material-symbols-outlined" data-weight={isActive('/dashboard/inventory') ? "fill" : undefined}>inventory_2</span>
-          <span className="font-label-md text-label-md">Material Inventory</span>
+        <Link href="/dashboard/inventory" className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${isActive('/dashboard/inventory') ? 'border-l-4 border-on-primary-container text-on-primary-container font-extrabold bg-white/20 scale-98' : 'text-on-primary-container/70 hover:text-on-primary-container hover:bg-white/10'}`}>
+          <span className="material-symbols-outlined" data-weight={isActive('/dashboard/inventory') ? 'fill' : 'regular'}>inventory_2</span>
+          <span className="font-label-md">Material Inventory</span>
         </Link>
-        <Link href="/dashboard/expenses" className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${isActive('/dashboard/expenses') ? 'border-l-4 border-secondary text-secondary-fixed font-bold bg-surface-variant/10 scale-98' : 'text-on-primary-container/70 hover:text-on-primary-container hover:bg-surface-variant/20'}`}>
-          <span className="material-symbols-outlined" data-weight={isActive('/dashboard/expenses') ? "fill" : undefined}>payments</span>
-          <span className="font-label-md text-label-md">Petty Cash</span>
+        <Link href="/dashboard/expenses" className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${isActive('/dashboard/expenses') ? 'border-l-4 border-on-primary-container text-on-primary-container font-extrabold bg-white/20 scale-98' : 'text-on-primary-container/70 hover:text-on-primary-container hover:bg-white/10'}`}>
+          <span className="material-symbols-outlined" data-weight={isActive('/dashboard/expenses') ? 'fill' : 'regular'}>payments</span>
+          <span className="font-label-md">Petty Cash</span>
         </Link>
-        <Link href="/dashboard/dpr" className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${isActive('/dashboard/dpr') ? 'border-l-4 border-secondary text-secondary-fixed font-bold bg-surface-variant/10 scale-98' : 'text-on-primary-container/70 hover:text-on-primary-container hover:bg-surface-variant/20'}`}>
-          <span className="material-symbols-outlined" data-weight={isActive('/dashboard/dpr') ? "fill" : undefined}>description</span>
-          <span className="font-label-md text-label-md">DPR</span>
+        <Link href="/dashboard/dpr" className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${isActive('/dashboard/dpr') ? 'border-l-4 border-on-primary-container text-on-primary-container font-extrabold bg-white/20 scale-98' : 'text-on-primary-container/70 hover:text-on-primary-container hover:bg-white/10'}`}>
+          <span className="material-symbols-outlined" data-weight={isActive('/dashboard/dpr') ? 'fill' : 'regular'}>description</span>
+          <span className="font-label-md">DPR</span>
         </Link>
       </nav>
 
