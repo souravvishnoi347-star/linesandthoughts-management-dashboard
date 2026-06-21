@@ -3,15 +3,32 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
+import * as XLSX from 'xlsx';
+
+type DateFilter = 'All Time' | 'This Month' | 'This Week';
 
 export default function DashboardOverview() {
   const [stats, setStats] = useState({ projects: 0, materials: 0, expenses: 0, dprs: 0 });
   const [recentExpenses, setRecentExpenses] = useState<{ id: string; description: string; amount: number; date: string }[]>([]);
   const [recentDprs, setRecentDprs] = useState<{ id: string; summary: string; date: string }[]>([]);
   const [loading, setLoading] = useState(true);
+  const [dateFilter, setDateFilter] = useState<DateFilter>('All Time');
+  const [showDateDropdown, setShowDateDropdown] = useState(false);
 
   useEffect(() => {
     async function fetchStats() {
+      setLoading(true);
+      
+      let dateThreshold = new Date(0).toISOString();
+      const now = new Date();
+      if (dateFilter === 'This Week') {
+        const lastWeek = new Date(now.setDate(now.getDate() - 7));
+        dateThreshold = lastWeek.toISOString();
+      } else if (dateFilter === 'This Month') {
+        const lastMonth = new Date(now.setMonth(now.getMonth() - 1));
+        dateThreshold = lastMonth.toISOString();
+      }
+
       const [
         { count: projCount },
         { count: matCount },
@@ -19,11 +36,11 @@ export default function DashboardOverview() {
         { count: dprCount },
         { data: recentDprData },
       ] = await Promise.all([
-        supabase.from('projects').select('*', { count: 'exact', head: true }),
-        supabase.from('materials').select('*', { count: 'exact', head: true }),
-        supabase.from('expenses').select('amount, description, date, id').order('date', { ascending: false }).limit(5),
-        supabase.from('dpr').select('*', { count: 'exact', head: true }),
-        supabase.from('dpr').select('id, summary, date').order('date', { ascending: false }).limit(3),
+        supabase.from('projects').select('*', { count: 'exact', head: true }).gte('created_at', dateThreshold),
+        supabase.from('materials').select('*', { count: 'exact', head: true }).gte('created_at', dateThreshold),
+        supabase.from('expenses').select('amount, description, date, id').gte('date', dateThreshold).order('date', { ascending: false }).limit(5),
+        supabase.from('dpr').select('*', { count: 'exact', head: true }).gte('date', dateThreshold),
+        supabase.from('dpr').select('id, summary, date').gte('date', dateThreshold).order('date', { ascending: false }).limit(3),
       ]);
 
       const totalExpenses = (expData || []).reduce((sum, e) => sum + e.amount, 0);
@@ -33,9 +50,34 @@ export default function DashboardOverview() {
       setLoading(false);
     }
     fetchStats();
-  }, []);
+  }, [dateFilter]);
 
-  if (loading) {
+  const handleGenerateReport = () => {
+    const wb = XLSX.utils.book_new();
+    
+    // Summary Sheet
+    const summaryData = [
+      ['Metric', 'Value'],
+      ['Total Active Sites', stats.projects],
+      ['Material Entries', stats.materials],
+      ['Petty Cash Spent (₹)', stats.expenses],
+      ['DPRs Submitted', stats.dprs]
+    ];
+    const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
+    XLSX.utils.book_append_sheet(wb, wsSummary, 'Summary');
+
+    // Recent Expenses Sheet
+    const wsExpenses = XLSX.utils.json_to_sheet(recentExpenses.map(e => ({ Date: e.date, Description: e.description, Amount: e.amount })));
+    XLSX.utils.book_append_sheet(wb, wsExpenses, 'Recent Expenses');
+
+    // Recent DPRs Sheet
+    const wsDprs = XLSX.utils.json_to_sheet(recentDprs.map(d => ({ Date: d.date, Summary: d.summary })));
+    XLSX.utils.book_append_sheet(wb, wsDprs, 'Recent DPRs');
+
+    XLSX.writeFile(wb, `Dashboard_Report_${new Date().toLocaleDateString('en-IN').replace(/\//g, '-')}.xlsx`);
+  };
+
+  if (loading && Object.values(stats).every(v => v === 0)) {
     return (
       <div className="flex justify-center items-center p-16 h-full flex-1">
         <div className="w-10 h-10 border-4 border-surface-container border-t-secondary rounded-full animate-spin"></div>
@@ -51,11 +93,33 @@ export default function DashboardOverview() {
           <p className="text-on-surface-variant font-body-md">Real-time metrics and recent activities across all sites.</p>
         </div>
         <div className="flex gap-2">
-          <button className="px-4 py-2 border border-outline-variant text-on-surface font-label-md text-label-md rounded-lg hover:bg-surface-container-low transition-colors flex items-center gap-2">
-            <span className="material-symbols-outlined text-[18px]">calendar_today</span>
-            This Week
-          </button>
-          <button className="px-4 py-2 bg-primary-container text-on-primary font-label-md text-label-md rounded-lg hover:bg-inverse-surface transition-colors shadow-sm hidden sm:block">
+          <div className="relative">
+            <button 
+              onClick={() => setShowDateDropdown(!showDateDropdown)}
+              className="px-4 py-2 border border-outline-variant text-on-surface font-label-md text-label-md rounded-lg hover:bg-surface-container-low transition-colors flex items-center gap-2"
+            >
+              <span className="material-symbols-outlined text-[18px]">calendar_today</span>
+              {dateFilter}
+            </button>
+            {showDateDropdown && (
+              <div className="absolute right-0 mt-2 w-48 bg-surface-container-lowest border border-outline-variant/30 rounded-lg shadow-lg z-50 py-1">
+                {(['All Time', 'This Month', 'This Week'] as DateFilter[]).map(filter => (
+                  <button 
+                    key={filter} 
+                    onClick={() => { setDateFilter(filter); setShowDateDropdown(false); }}
+                    className={`w-full text-left px-4 py-2 hover:bg-surface-container-low text-on-surface font-body-md ${dateFilter === filter ? 'bg-surface-variant/20 font-bold' : ''}`}
+                  >
+                    {filter}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+          <button 
+            onClick={handleGenerateReport}
+            className="px-4 py-2 bg-primary-container text-on-primary font-label-md text-label-md rounded-lg hover:bg-inverse-surface transition-colors shadow-sm hidden sm:flex items-center gap-2"
+          >
+            <span className="material-symbols-outlined text-[18px]">download</span>
             Generate Report
           </button>
         </div>

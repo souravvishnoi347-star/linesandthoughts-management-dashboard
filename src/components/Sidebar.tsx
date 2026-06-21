@@ -47,6 +47,10 @@ export function Sidebar() {
           <span className="material-symbols-outlined" data-weight={isActive('/dashboard/dpr') ? 'fill' : 'regular'}>description</span>
           <span className="font-label-md">DPR</span>
         </Link>
+        <Link href="/dashboard/import" className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${isActive('/dashboard/import') ? 'border-l-4 border-on-primary-container text-on-primary-container font-extrabold bg-white/20 scale-98' : 'text-on-primary-container/70 hover:text-on-primary-container hover:bg-white/10'}`}>
+          <span className="material-symbols-outlined" data-weight={isActive('/dashboard/import') ? 'fill' : 'regular'}>cloud_upload</span>
+          <span className="font-label-md">Import Data</span>
+        </Link>
       </nav>
 
       <div className="px-gutter mt-auto pt-4 pb-4">
