@@ -139,8 +139,8 @@ export default function DashboardOverview() {
             </span>
           </div>
           <div className="z-10">
-            <p className="text-on-surface-variant font-label-sm text-label-sm mb-1 uppercase tracking-wider">Total Active Sites</p>
-            <h3 className="font-display-lg text-display-lg text-on-surface">{stats.projects}</h3>
+            <p className="text-on-surface-variant text-xs font-semibold mb-1 tracking-wide">Total Active Sites</p>
+            <h3 className="font-display-lg text-display-lg text-on-surface font-bold">{stats.projects}</h3>
           </div>
         </div>
 
@@ -153,8 +153,8 @@ export default function DashboardOverview() {
             </div>
           </div>
           <div className="z-10">
-            <p className="text-on-surface-variant font-label-sm text-label-sm mb-1 uppercase tracking-wider">Material Entries</p>
-            <h3 className="font-display-lg text-display-lg text-on-surface">{stats.materials}</h3>
+            <p className="text-on-surface-variant text-xs font-semibold mb-1 tracking-wide">Material Entries</p>
+            <h3 className="font-display-lg text-display-lg text-on-surface font-bold">{stats.materials}</h3>
           </div>
         </div>
 
@@ -170,8 +170,8 @@ export default function DashboardOverview() {
             </span>
           </div>
           <div className="z-10">
-            <p className="text-on-surface-variant font-label-sm text-label-sm mb-1 uppercase tracking-wider">Petty Cash Spent</p>
-            <h3 className="font-headline-lg text-headline-lg text-on-surface mt-2">₹{stats.expenses.toLocaleString('en-IN')}</h3>
+            <p className="text-on-surface-variant text-xs font-semibold mb-1 tracking-wide">Petty Cash Spent</p>
+            <h3 className="font-headline-lg text-headline-lg text-on-surface mt-2 font-bold">₹{stats.expenses.toLocaleString('en-IN')}</h3>
           </div>
         </div>
 
@@ -184,8 +184,8 @@ export default function DashboardOverview() {
             </div>
           </div>
           <div className="z-10">
-            <p className="text-on-surface-variant font-label-sm text-label-sm mb-1 uppercase tracking-wider">DPRs Submitted</p>
-            <h3 className="font-display-lg text-display-lg text-on-surface">{stats.dprs}</h3>
+            <p className="text-on-surface-variant text-xs font-semibold mb-1 tracking-wide">DPRs Submitted</p>
+            <h3 className="font-display-lg text-display-lg text-on-surface font-bold">{stats.dprs}</h3>
           </div>
         </div>
       </div>
@@ -206,7 +206,7 @@ export default function DashboardOverview() {
             ) : (
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-surface-bright text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider border-b border-outline-variant/20">
+                  <tr className="bg-surface-bright text-on-surface-variant text-xs font-semibold tracking-wide border-b border-outline-variant/20">
                     <th className="py-3 px-5 font-medium">Description</th>
                     <th className="py-3 px-5 font-medium text-right">Amount</th>
                   </tr>
