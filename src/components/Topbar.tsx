@@ -98,12 +98,17 @@ export function Topbar() {
                   <span className="material-symbols-outlined text-[18px]">account_circle</span>
                   My Profile
                 </Link>
-                <form action="/auth/signout" method="post">
-                  <button type="submit" className="w-full text-left px-4 py-2.5 hover:bg-error-container/30 text-error text-sm flex items-center gap-2 transition-colors">
-                    <span className="material-symbols-outlined text-[18px]">logout</span>
-                    Sign Out
-                  </button>
-                </form>
+                <button 
+                  onClick={async () => {
+                    const { supabase } = await import('@/lib/supabase');
+                    await supabase.auth.signOut();
+                    window.location.href = '/login';
+                  }}
+                  className="w-full text-left px-4 py-2.5 hover:bg-error-container/30 text-error text-sm flex items-center gap-2 transition-colors"
+                >
+                  <span className="material-symbols-outlined text-[18px]">logout</span>
+                  Sign Out
+                </button>
               </div>
             </div>
           )}

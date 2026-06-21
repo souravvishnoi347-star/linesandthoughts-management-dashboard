@@ -57,12 +57,17 @@ export function Sidebar() {
           New Project
         </Link>
         
-        <form action="/auth/signout" method="post" className="mt-4">
-          <button type="submit" className="w-full text-on-primary-container/70 hover:text-error transition-colors flex items-center justify-center gap-2 py-2 font-label-sm">
-            <span className="material-symbols-outlined text-[18px]">logout</span>
-            Sign Out
-          </button>
-        </form>
+        <button 
+          onClick={async () => {
+            const { supabase } = await import('@/lib/supabase');
+            await supabase.auth.signOut();
+            window.location.href = '/login';
+          }}
+          className="w-full text-on-primary-container/70 hover:text-error transition-colors flex items-center justify-center gap-2 py-2 font-label-sm mt-4"
+        >
+          <span className="material-symbols-outlined text-[18px]">logout</span>
+          Sign Out
+        </button>
       </div>
     </aside>
   );
