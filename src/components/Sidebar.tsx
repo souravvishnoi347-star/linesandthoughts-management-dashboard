@@ -12,7 +12,7 @@ export function Sidebar() {
 
   return (
     <aside className="hidden md:flex flex-col h-screen fixed bg-primary-container/80 backdrop-blur-xl docked w-sidebar-width left-0 border-r border-outline-variant/20 shadow-xl py-base z-50">
-      <div className="px-gutter mb-8 mt-2 flex items-center justify-center pt-4">
+      <div className="px-gutter mb-8 mt-2 flex items-center justify-start pt-4 pl-2">
         <Image src="/logo.png" alt="Lines & Thoughts logo" width={220} height={80} className="object-contain" priority />
       </div>
 
