@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
-import { Logo } from '@/components/Logo';
+import Image from 'next/image';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -47,7 +47,14 @@ export default function LoginPage() {
         
         <div className="flex flex-col items-center mb-8">
           <div className="w-full flex justify-center mb-4">
-            <Logo iconSize={72} className="text-on-surface" />
+            <Image 
+              src="/logo.png" 
+              alt="Lines & Thoughts" 
+              width={280} 
+              height={100} 
+              className="object-contain drop-shadow-sm"
+              priority
+            />
           </div>
           <p className="font-label-md text-label-md text-on-surface-variant text-center mt-2 tracking-wide uppercase">
             Construction Management
