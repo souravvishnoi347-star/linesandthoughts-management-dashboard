@@ -1,21 +1,23 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
-import Image from 'next/image';
+import { Logo } from '@/components/Logo';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
+    setError(null);
 
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -32,9 +34,7 @@ export default function LoginPage() {
       return;
     }
 
-    if (data?.user) {
-      window.location.href = '/dashboard';
-    }
+    router.push('/dashboard');
   };
 
   return (
@@ -47,14 +47,7 @@ export default function LoginPage() {
         
         <div className="flex flex-col items-center mb-8">
           <div className="w-full flex justify-center mb-4">
-            <Image 
-              src="/logo.png" 
-              alt="Lines & Thoughts" 
-              width={240} 
-              height={80} 
-              className="object-contain drop-shadow-sm"
-              priority
-            />
+            <Logo iconSize={72} className="text-on-surface" />
           </div>
           <p className="font-label-md text-label-md text-on-surface-variant text-center mt-2 tracking-wide uppercase">
             Construction Management
