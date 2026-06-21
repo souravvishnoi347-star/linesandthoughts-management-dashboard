@@ -8,8 +8,8 @@ interface LogoProps {
 
 export function Logo({ className = '', iconSize = 48 }: LogoProps) {
   // We calculate text sizes relative to the icon size so it scales perfectly
-  const mainTextSize = iconSize * 0.45; 
-  const subTextSize = iconSize * 0.22;
+  const mainTextSize = iconSize * 0.26; 
+  const subTextSize = iconSize * 0.15;
 
   return (
     <div className={`flex items-center gap-3 ${className}`}>
@@ -18,15 +18,15 @@ export function Logo({ className = '', iconSize = 48 }: LogoProps) {
         alt="Lines & Thoughts Icon" 
         width={iconSize} 
         height={iconSize} 
-        className="object-contain shrink-0"
+        className="object-contain shrink-0 drop-shadow-sm"
         priority
       />
       <div className="flex flex-col justify-center">
-        <div className="font-headline-md tracking-tight" style={{ fontSize: `${mainTextSize}px`, lineHeight: 1.1 }}>
-          <span className="font-light">Lines & </span>
-          <span className="font-extrabold">Thoughts</span>
+        <div className="font-headline-md tracking-[0.15em]" style={{ fontSize: `${mainTextSize}px`, lineHeight: 1.2 }}>
+          <span className="font-light uppercase">LINES </span>
+          <span className="font-bold uppercase">& THOUGHTS</span>
         </div>
-        <div className="font-body-md tracking-widest mt-0.5 font-medium opacity-70" style={{ fontSize: `${subTextSize}px`, lineHeight: 1 }}>
+        <div className="font-body-md tracking-[0.2em] font-medium opacity-80 mt-1" style={{ fontSize: `${subTextSize}px`, lineHeight: 1 }}>
           BY KARTIK | AKSHAY
         </div>
       </div>
