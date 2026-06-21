@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
+import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
-const montserrat = Montserrat({
-  variable: "--font-heading",
+const inter = Inter({
+  variable: "--font-body",
   subsets: ["latin"],
 });
 
-const montserratBody = Montserrat({
-  variable: "--font-body",
+const jakarta = Plus_Jakarta_Sans({
+  variable: "--font-heading",
   subsets: ["latin"],
 });
 
@@ -23,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${montserrat.variable} ${montserratBody.variable} light`}>
+    <html lang="en" className={`${inter.variable} ${jakarta.variable} light`}>
       <head>
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
       </head>
