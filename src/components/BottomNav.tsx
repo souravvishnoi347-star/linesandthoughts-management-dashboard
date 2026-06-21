@@ -17,25 +17,21 @@ export function BottomNav() {
   const isActive = (path: string) => pathname === path;
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-surface-container-lowest/95 backdrop-blur-xl border-t border-outline-variant/30 flex items-center justify-around px-2 pb-safe shadow-2xl">
+    <nav className="md:hidden fixed bottom-0 w-full bg-surface-container-lowest border-t border-outline-variant pb-safe pt-2 px-6 flex justify-between items-center z-50 shadow-2xl">
       {navItems.map((item, index) => {
         // Middle item becomes FAB-style
         if (index === 2) {
           return (
-            <div key="fab" className="flex flex-col items-center -mt-6">
+            <div key="fab" className="relative -top-5 flex flex-col items-center min-w-[64px]">
               <Link
                 href={item.href}
-                className={`w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 ${
-                  isActive(item.href)
-                    ? 'bg-primary-container shadow-primary-container/40 scale-110'
-                    : 'bg-primary-container hover:scale-105'
-                }`}
+                className="w-14 h-14 bg-primary-container rounded-full flex items-center justify-center shadow-lg active:scale-95 transition-transform"
               >
-                <span className="material-symbols-outlined text-on-primary-container text-[24px]" data-weight="fill">
+                <span className="material-symbols-outlined text-on-primary-container text-[24px]" style={{ fontVariationSettings: "'FILL' 1" }}>
                   {item.icon}
                 </span>
               </Link>
-              <span className={`text-[10px] font-semibold mt-1 ${isActive(item.href) ? 'text-primary-container' : 'text-on-surface-variant'}`}>
+              <span className={`font-label text-label-sm absolute -bottom-5 w-full text-center ${isActive(item.href) ? 'font-bold text-primary' : 'text-on-surface-variant'}`}>
                 {item.label}
               </span>
             </div>
@@ -46,24 +42,21 @@ export function BottomNav() {
           <Link
             key={item.href}
             href={item.href}
-            className={`flex flex-col items-center gap-0.5 py-2 px-3 rounded-xl transition-all duration-200 min-w-[56px] ${
+            className={`flex flex-col items-center gap-1 min-w-[64px] active:scale-95 transition-transform ${
               isActive(item.href)
-                ? 'text-primary-container'
-                : 'text-on-surface-variant hover:text-on-surface'
+                ? 'text-primary'
+                : 'text-on-surface-variant hover:opacity-80'
             }`}
           >
             <span
-              className={`material-symbols-outlined text-[22px] transition-all duration-200 ${isActive(item.href) ? 'scale-110' : ''}`}
-              data-weight={isActive(item.href) ? 'fill' : 'regular'}
+              className="material-symbols-outlined text-[24px]"
+              style={{ fontVariationSettings: isActive(item.href) ? "'FILL' 1" : "'FILL' 0" }}
             >
               {item.icon}
             </span>
-            <span className={`text-[10px] font-semibold ${isActive(item.href) ? 'font-bold' : ''}`}>
+            <span className={`font-label text-label-sm ${isActive(item.href) ? 'font-bold' : ''}`}>
               {item.label}
             </span>
-            {isActive(item.href) && (
-              <span className="w-1 h-1 rounded-full bg-primary-container mt-0.5" />
-            )}
           </Link>
         );
       })}

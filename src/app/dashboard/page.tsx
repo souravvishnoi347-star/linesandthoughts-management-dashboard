@@ -127,15 +127,14 @@ export default function DashboardOverview() {
 
       {/* Bento Grid: Metric Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-        {/* Metric 1: Total Active Sites (Slate) */}
-        <div className="bg-surface-container-lowest rounded-xl p-5 border border-outline-variant/30 flex flex-col justify-between relative overflow-hidden group">
-          <div className="absolute -right-4 -top-4 w-24 h-24 bg-primary-container/5 rounded-full blur-xl group-hover:bg-primary-container/10 transition-colors"></div>
+        {/* Metric 1: Total Active Sites */}
+        <div className="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant shadow-sm card-glow flex flex-col justify-between group">
           <div className="flex justify-between items-start mb-4 z-10">
-            <div className="p-2 bg-surface-container-low text-primary-container rounded-lg">
-              <span className="material-symbols-outlined">architecture</span>
+            <div className="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+              <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>architecture</span>
             </div>
-            <span className="text-secondary font-label-md text-label-md flex items-center gap-1 bg-secondary-container/30 px-2 py-0.5 rounded-full">
-              <span className="material-symbols-outlined text-[14px]">arrow_upward</span> Active
+            <span className="text-on-secondary-container bg-secondary-container text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-0.5">
+              <span className="material-symbols-outlined text-[12px]">arrow_upward</span> Active
             </span>
           </div>
           <div className="z-10">
@@ -145,11 +144,10 @@ export default function DashboardOverview() {
         </div>
 
         {/* Metric 2: Material Entries */}
-        <div className="bg-surface-container-lowest rounded-xl p-5 border border-outline-variant/30 flex flex-col justify-between relative overflow-hidden group">
-          <div className="absolute -right-4 -top-4 w-24 h-24 bg-surface-dim/30 rounded-full blur-xl group-hover:bg-surface-dim/50 transition-colors"></div>
+        <div className="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant shadow-sm card-glow flex flex-col justify-between group">
           <div className="flex justify-between items-start mb-4 z-10">
-            <div className="p-2 bg-surface-container text-on-surface rounded-lg">
-              <span className="material-symbols-outlined">inventory_2</span>
+            <div className="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+              <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>inventory_2</span>
             </div>
           </div>
           <div className="z-10">
@@ -159,14 +157,13 @@ export default function DashboardOverview() {
         </div>
 
         {/* Metric 3: Petty Cash Spent (Rose/Error) */}
-        <div className="bg-surface-container-lowest rounded-xl p-5 border border-outline-variant/30 flex flex-col justify-between relative overflow-hidden group">
-          <div className="absolute -right-4 -top-4 w-24 h-24 bg-error-container/30 rounded-full blur-xl group-hover:bg-error-container/50 transition-colors"></div>
+        <div className="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant shadow-sm card-glow flex flex-col justify-between group">
           <div className="flex justify-between items-start mb-4 z-10">
-            <div className="p-2 bg-error-container text-on-error-container rounded-lg">
-              <span className="material-symbols-outlined">payments</span>
+            <div className="w-8 h-8 rounded-lg bg-error-container flex items-center justify-center text-error">
+              <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>payments</span>
             </div>
-            <span className="text-error font-label-md text-label-md flex items-center gap-1 bg-error-container/30 px-2 py-0.5 rounded-full">
-              <span className="material-symbols-outlined text-[14px]">warning</span> Total
+            <span className="text-error bg-error-container text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-0.5">
+              <span className="material-symbols-outlined text-[12px]">warning</span> Total
             </span>
           </div>
           <div className="z-10">
@@ -176,11 +173,10 @@ export default function DashboardOverview() {
         </div>
 
         {/* Metric 4: DPRs Submitted */}
-        <div className="bg-surface-container-lowest rounded-xl p-5 border border-outline-variant/30 flex flex-col justify-between relative overflow-hidden group">
-          <div className="absolute -right-4 -top-4 w-24 h-24 bg-tertiary-fixed/30 rounded-full blur-xl group-hover:bg-tertiary-fixed/50 transition-colors"></div>
+        <div className="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant shadow-sm card-glow flex flex-col justify-between group">
           <div className="flex justify-between items-start mb-4 z-10">
-            <div className="p-2 bg-tertiary-fixed text-on-tertiary-fixed rounded-lg">
-              <span className="material-symbols-outlined">description</span>
+            <div className="w-8 h-8 rounded-lg bg-tertiary-fixed flex items-center justify-center text-tertiary">
+              <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>description</span>
             </div>
           </div>
           <div className="z-10">

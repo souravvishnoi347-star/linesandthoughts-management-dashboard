@@ -1,53 +1,53 @@
 @import "tailwindcss";
 
 @theme {
-  --color-surface-container-high: #dce9ff;
-  --color-on-primary-container: #1a1600;
-  --color-on-error-container: #93000a;
-  --color-surface-variant: #d3e4fe;
-  --color-primary-fixed: #dae2fd;
-  --color-on-tertiary: #ffffff;
-  --color-on-secondary-fixed-variant: #005236;
-  --color-tertiary-container: #2a1700;
-  --color-surface-tint: #565e74;
-  --color-surface-container-low: #eff4ff;
-  --color-on-secondary-container: #00714d;
-  --color-surface-dim: #cbdbf5;
-  --color-on-primary-fixed-variant: #3f465c;
-  --color-on-surface: #0b1c30;
-  --color-tertiary-fixed-dim: #ffb95f;
-  --color-inverse-primary: #bec6e0;
-  --color-error: #ba1a1a;
-  --color-secondary-container: #6cf8bb;
-  --color-surface-container-lowest: #ffffff;
-  --color-on-secondary: #ffffff;
+  --color-on-surface-variant: #4d4635;
+  --color-surface-variant: #eae1d4;
+  --color-on-primary-fixed: #241a00;
+  --color-primary-fixed-dim: #e9c349;
   --color-error-container: #ffdad6;
-  --color-tertiary: #000000;
-  --color-secondary: #006c49;
-  --color-secondary-fixed-dim: #4edea3;
-  --color-surface-container-highest: #d3e4fe;
-  --color-on-tertiary-fixed: #2a1700;
-  --color-surface: #f8f9ff;
-  --color-on-primary: #ffffff;
-  --color-on-surface-variant: #45464d;
-  --color-inverse-surface: #213145;
+  --color-error: #ba1a1a;
+  --color-surface-bright: #fff8f0;
+  --color-outline-variant: #d0c5af;
+  --color-surface-container-lowest: #ffffff;
+  --color-inverse-on-surface: #f8f0e2;
   --color-on-error: #ffffff;
-  --color-outline-variant: #c6c6cd;
-  --color-on-background: #0b1c30;
+  --color-on-tertiary-fixed: #1a1b21;
+  --color-surface: #fff8f0;
+  --color-on-secondary-fixed: #0b1c30;
+  --color-tertiary-fixed-dim: #c6c6ce;
+  --color-on-surface: #1f1b13;
+  --color-inverse-surface: #343027;
+  --color-on-tertiary-fixed-variant: #45464d;
+  --color-on-primary-fixed-variant: #574500;
+  --color-surface-container-highest: #eae1d4;
+  --color-secondary-container: #d3e3ff;
+  --color-primary-fixed: #ffe088;
+  --color-on-tertiary: #ffffff;
+  --color-surface-container-high: #efe7da;
+  --color-on-secondary: #ffffff;
+  --color-on-error-container: #93000a;
+  --color-surface-dim: #e1d9cc;
   --color-primary-container: #d4af37;
-  --color-tertiary-fixed: #ffddb8;
-  --color-surface-bright: #f8f9ff;
-  --color-primary-fixed-dim: #bec6e0;
-  --color-outline: #76777d;
-  --color-on-tertiary-container: #b87500;
-  --color-inverse-on-surface: #eaf1ff;
-  --color-surface-container: #e5eeff;
-  --color-secondary-fixed: #6ffbbe;
-  --color-on-primary-fixed: #131b2e;
-  --color-primary: #000000;
-  --color-on-secondary-fixed: #002113;
-  --color-background: #f8f9ff;
-  --color-on-tertiary-fixed-variant: #653e00;
+  --color-primary: #735c00;
+  --color-on-secondary-fixed-variant: #38485e;
+  --color-tertiary: #5d5e65;
+  --color-on-primary-container: #554300;
+  --color-background: #fff8f0;
+  --color-secondary: #505f76;
+  --color-outline: #7f7663;
+  --color-on-background: #1f1b13;
+  --color-surface-tint: #735c00;
+  --color-tertiary-fixed: #e2e2ea;
+  --color-surface-container-low: #fbf3e5;
+  --color-secondary-fixed-dim: #b7c7e2;
+  --color-inverse-primary: #e9c349;
+  --color-surface-container: #f5eddf;
+  --color-on-primary: #ffffff;
+  --color-on-tertiary-container: #43444b;
+  --color-secondary-fixed: #d3e3ff;
+  --color-on-secondary-container: #56657d;
+  --color-tertiary-container: #b2b2ba;
 
   --spacing-gutter: 16px;
   --spacing-sidebar-collapsed: 80px;
@@ -98,4 +98,19 @@
 /* Safe area bottom padding for iPhone notch/home bar */
 .pb-safe {
   padding-bottom: max(16px, env(safe-area-inset-bottom));
+}
+
+.card-glow {
+  position: relative;
+}
+.card-glow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  background: radial-gradient(circle at top right, rgba(212, 175, 55, 0.15), transparent 70%);
+  border-radius: 0 1rem 0 0;
+  pointer-events: none;
 }
