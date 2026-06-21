@@ -86,9 +86,9 @@ export default function DashboardOverview() {
   }
 
   return (
-    <div className="p-container-padding space-y-6 flex-1 overflow-x-hidden">
+    <div className="p-4 md:p-container-padding space-y-4 md:space-y-6 flex-1 overflow-x-hidden">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-2">
-        <div>
+        <div className="hidden md:block">
           <h2 className="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-on-surface mb-1">Dashboard Overview</h2>
           <p className="text-on-surface-variant font-body-md">Real-time metrics and recent activities across all sites.</p>
         </div>
@@ -126,7 +126,7 @@ export default function DashboardOverview() {
       </div>
 
       {/* Bento Grid: Metric Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
         {/* Metric 1: Total Active Sites (Slate) */}
         <div className="bg-surface-container-lowest rounded-xl p-5 border border-outline-variant/30 flex flex-col justify-between relative overflow-hidden group">
           <div className="absolute -right-4 -top-4 w-24 h-24 bg-primary-container/5 rounded-full blur-xl group-hover:bg-primary-container/10 transition-colors"></div>
@@ -191,7 +191,7 @@ export default function DashboardOverview() {
       </div>
 
       {/* Complex Layout Area */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4 md:mt-6">
         {/* Recent Activities Table Area */}
         <div className="bg-surface-container-lowest rounded-xl border border-outline-variant/30 p-0 flex flex-col shadow-sm overflow-hidden">
           <div className="p-5 border-b border-outline-variant/20 flex justify-between items-center bg-surface-container-low/50">
