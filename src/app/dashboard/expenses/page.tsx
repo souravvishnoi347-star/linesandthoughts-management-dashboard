@@ -127,28 +127,33 @@ export default function ExpensesPage() {
       <div className="flex flex-col md:flex-row gap-6 flex-1">
         
         {/* Left Form (or Mobile Top) */}
-        <aside className="md:w-1/3 bg-surface-container-lowest md:rounded-xl border border-outline-variant/20 p-6 shadow-sm rounded-xl h-fit">
-          <div className="flex justify-between items-center mb-6">
-            <h4 className="font-headline-md text-headline-md text-on-surface">Log Expense</h4>
+        <aside className="md:w-1/3 bg-surface-container-lowest rounded-[24px] shadow-[0px_8px_30px_rgba(11,28,48,0.12)] p-6 h-fit border border-outline-variant/20 relative">
+          <div className="flex justify-between items-center mb-6 border-b border-outline-variant/30 pb-4">
+            <h4 className="font-headline-lg text-headline-lg text-on-surface">Log Petty Cash</h4>
           </div>
-          <form onSubmit={handleAddExpense} className="space-y-5">
-            <div>
-              <label className="block font-label-sm text-label-sm text-on-surface-variant mb-1">Amount (₹)</label>
-              <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-body-lg text-body-lg">₹</span>
-                <input required type="number" step="0.01" value={amount} onChange={(e) => setAmount(e.target.value)} className="w-full bg-surface pl-8 pr-4 py-3 rounded-lg border border-outline-variant/50 focus:border-primary-container focus:ring-1 focus:ring-primary-container font-body-lg text-body-lg text-on-surface transition-colors" placeholder="0.00" />
+          <form onSubmit={handleAddExpense} className="space-y-4">
+            
+            <div className="flex flex-col items-center justify-center py-4 border-b border-outline-variant/30 mb-4">
+              <label className="font-label-md text-label-md text-on-surface-variant mb-1">Amount</label>
+              <div className="flex items-center gap-2">
+                <span className="font-display text-display text-primary">₹</span>
+                <input required type="number" step="0.01" value={amount} onChange={(e) => setAmount(e.target.value)} className="w-32 bg-transparent border-none text-center font-display text-display text-on-surface focus:ring-0 p-0 placeholder-outline-variant/50 outline-none" placeholder="0" />
               </div>
             </div>
             
-            <div>
-              <label className="block font-label-sm text-label-sm text-on-surface-variant mb-1">Description</label>
-              <textarea required value={description} onChange={(e) => setDescription(e.target.value)} className="w-full bg-surface px-4 py-3 rounded-lg border border-outline-variant/50 focus:border-primary-container focus:ring-1 focus:ring-primary-container font-body-md text-body-md text-on-surface transition-colors resize-none" placeholder="What was this for?" rows={2}></textarea>
+            <div className="flex flex-col gap-1">
+              <label className="font-label-md text-label-md text-on-surface-variant ml-1">Description</label>
+              <div className="relative">
+                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">edit_note</span>
+                <input required type="text" value={description} onChange={(e) => setDescription(e.target.value)} className="w-full h-[48px] pl-10 pr-4 bg-surface-container-lowest border border-outline-variant/30 rounded-[14px] font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-colors outline-none shadow-[0px_4px_20px_rgba(11,28,48,0.05)]" placeholder="What was this for?" />
+              </div>
             </div>
 
-            <div>
-              <label className="block font-label-sm text-label-sm text-on-surface-variant mb-1">Category</label>
+            <div className="flex flex-col gap-1">
+              <label className="font-label-md text-label-md text-on-surface-variant ml-1">Category</label>
               <div className="relative">
-                <select value={category} onChange={(e) => setCategory(e.target.value)} className="w-full bg-surface pl-4 pr-10 py-3 rounded-lg border border-outline-variant/50 focus:border-primary-container focus:ring-1 focus:ring-primary-container font-body-md text-body-md text-on-surface appearance-none transition-colors h-[50px]">
+                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">category</span>
+                <select value={category} onChange={(e) => setCategory(e.target.value)} className="w-full h-[48px] pl-10 pr-10 bg-surface-container-lowest border border-outline-variant/30 rounded-[14px] font-body-md text-body-md text-on-surface appearance-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors outline-none shadow-[0px_4px_20px_rgba(11,28,48,0.05)]">
                   <option>Food & Refreshments</option>
                   <option>Fuel / Travel</option>
                   <option>Small Tools / Hardware</option>
@@ -156,29 +161,35 @@ export default function ExpensesPage() {
                   <option>Stationery & Print</option>
                   <option>Other</option>
                 </select>
-                <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
+                <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline pointer-events-none">expand_more</span>
               </div>
             </div>
 
-            <div>
-              <label className="block font-label-sm text-label-sm text-on-surface-variant mb-1">Project / Site</label>
+            <div className="flex flex-col gap-1">
+              <label className="font-label-md text-label-md text-on-surface-variant ml-1">Project Site</label>
               <div className="relative">
-                <select value={projectId} onChange={(e) => setProjectId(e.target.value)} className="w-full bg-surface pl-4 pr-10 py-3 rounded-lg border border-outline-variant/50 focus:border-primary-container focus:ring-1 focus:ring-primary-container font-body-md text-body-md text-on-surface appearance-none transition-colors h-[50px]">
+                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">domain</span>
+                <select value={projectId} onChange={(e) => setProjectId(e.target.value)} className="w-full h-[48px] pl-10 pr-10 bg-surface-container-lowest border border-outline-variant/30 rounded-[14px] font-body-md text-body-md text-on-surface appearance-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors outline-none shadow-[0px_4px_20px_rgba(11,28,48,0.05)]">
                   {projects.length === 0 ? <option value="">No projects available (Global)</option> : <option value="" disabled>Select a project</option>}
                   {projects.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
                 </select>
-                <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
+                <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline pointer-events-none">expand_more</span>
               </div>
             </div>
 
-            <div>
-              <label className="block font-label-sm text-label-sm text-on-surface-variant mb-1">Date</label>
-              <input type="date" required value={date} onChange={(e) => setDate(e.target.value)} className="w-full bg-surface px-4 py-3 rounded-lg border border-outline-variant/50 focus:border-primary-container focus:ring-1 focus:ring-primary-container font-body-md text-body-md text-on-surface transition-colors" />
+            <div className="flex flex-col gap-1">
+              <label className="font-label-md text-label-md text-on-surface-variant ml-1">Date</label>
+              <div className="relative">
+                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">calendar_today</span>
+                <input type="date" required value={date} onChange={(e) => setDate(e.target.value)} className="w-full h-[48px] pl-10 pr-4 bg-surface-container-lowest border border-outline-variant/30 rounded-[14px] font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-colors outline-none shadow-[0px_4px_20px_rgba(11,28,48,0.05)]" />
+              </div>
             </div>
 
-            <button type="submit" disabled={submitting} className="w-full py-3.5 bg-primary-container text-on-primary rounded-lg font-label-md text-label-md hover:bg-primary-container/90 transition-colors mt-6 shadow-md">
-              {submitting ? 'Saving...' : 'Save Expense'}
-            </button>
+            <div className="pt-4 mt-auto">
+              <button type="submit" disabled={submitting} className="w-full h-[48px] bg-primary text-on-primary rounded-full font-label-md text-label-md hover:bg-primary/90 transition-colors shadow-sm flex items-center justify-center">
+                {submitting ? 'Saving...' : 'Save Record'}
+              </button>
+            </div>
           </form>
         </aside>
 

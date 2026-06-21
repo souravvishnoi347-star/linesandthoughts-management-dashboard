@@ -50,15 +50,20 @@ export default function ProjectsPage() {
 
   return (
     <div className="p-container-padding flex-1 overflow-x-hidden space-y-6">
-      {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-        <div>
-          <h1 className="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-on-surface">Active Projects</h1>
+      {/* Page Header (Mobile search added) */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
+        <div className="hidden md:block">
+          <h1 className="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-on-surface">Projects / Sites</h1>
           <p className="font-body-md text-body-md text-on-surface-variant mt-1">Manage and monitor ongoing site operations.</p>
+        </div>
+        <div className="md:hidden flex items-center bg-surface-container-lowest border border-outline-variant/30 rounded-full px-4 py-3 shadow-sm">
+          <span className="material-symbols-outlined text-on-surface-variant mr-2">search</span>
+          <input className="w-full bg-transparent outline-none font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant border-none focus:ring-0 p-0" placeholder="Search sites..." type="text" />
+          <span className="material-symbols-outlined text-on-surface-variant ml-2">tune</span>
         </div>
         <button 
           onClick={() => setShowAddProject(!showAddProject)}
-          className="bg-primary text-on-primary px-6 py-3 rounded-lg font-label-md text-label-md flex items-center justify-center gap-2 hover:bg-inverse-surface transition-colors shadow-lg shadow-primary/10 w-full sm:w-auto"
+          className="bg-primary text-on-primary px-6 py-3 rounded-full md:rounded-lg font-label-md text-label-md flex items-center justify-center gap-2 hover:opacity-90 transition-opacity shadow-lg shadow-primary/10 w-full sm:w-auto mt-2 md:mt-0"
         >
           <span className="material-symbols-outlined text-[20px]">{showAddProject ? 'close' : 'add'}</span>
           {showAddProject ? 'Cancel' : 'New Site'}
@@ -110,42 +115,36 @@ export default function ProjectsPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {projects.map(project => (
-            <article key={project.id} className="bg-surface-container-lowest rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-outline-variant/10 flex flex-col">
-              <div className="h-48 w-full relative bg-surface-container flex items-center justify-center">
-                {/* Fallback pattern for images */}
-                <div className="absolute inset-0 opacity-10 bg-[radial-gradient(var(--outline)_1px,transparent_1px)] [background-size:16px_16px]"></div>
-                <span className="material-symbols-outlined text-[64px] text-outline-variant/50">construction</span>
-                
-                <div className={`absolute top-4 right-4 px-3 py-1 rounded-full font-label-sm text-label-sm flex items-center gap-1 shadow-sm border ${project.status === 'active' ? 'bg-secondary-container text-on-secondary-container border-secondary-container' : 'bg-surface-variant text-on-surface-variant border-outline-variant/20'}`}>
-                  <span className={`w-2 h-2 rounded-full ${project.status === 'active' ? 'bg-secondary' : 'bg-outline'}`}></span>
-                  {project.status === 'active' ? 'Active Site' : 'Completed'}
+            <article key={project.id} className={`bg-surface-container-lowest rounded-[20px] p-5 shadow-sm border border-outline-variant/30 transition-transform ${project.status !== 'active' ? 'opacity-75' : 'hover:scale-[1.01]'}`}>
+              <div className="flex justify-between items-start mb-4">
+                <div>
+                  <h2 className="font-headline-md text-headline-md text-on-surface mb-1 line-clamp-1">{project.name}</h2>
+                  <p className="font-body-md text-body-md text-secondary flex items-center gap-1">
+                    <span className="material-symbols-outlined text-[16px]">location_on</span> <span className="line-clamp-1">{project.location || 'Location not specified'}</span>
+                  </p>
                 </div>
+                {/* Status Badge */}
+                <span className={`${project.status === 'active' ? 'bg-primary-container/20 text-primary-container border-primary-container/30' : 'bg-surface-variant text-on-surface-variant border-outline-variant/30'} font-label-md text-label-md font-bold px-3 py-1 rounded-[8px] border whitespace-nowrap`}>
+                  {project.status === 'active' ? 'Active' : 'Completed'}
+                </span>
               </div>
-
-              <div className="p-6 flex flex-col flex-1">
-                <div className="flex justify-between items-start mb-2">
-                  <h3 className="font-headline-md text-headline-md text-on-surface line-clamp-1">{project.name}</h3>
-                </div>
-                
-                <div className="flex items-center gap-1 text-on-surface-variant font-body-md text-body-md mb-4">
-                  <span className="material-symbols-outlined text-[18px]">location_on</span>
-                  <span className="line-clamp-1">{project.location || 'Location not specified'}</span>
-                </div>
-
-                <div className="mt-auto flex flex-col gap-3">
-                  <div className="flex items-center justify-between text-label-sm text-on-surface-variant bg-surface-container-low p-2 rounded-lg">
-                    <span>Started:</span>
-                    <span className="font-bold text-on-surface">{new Date(project.created_at).toLocaleDateString('en-IN')}</span>
-                  </div>
-
+              <div className="grid grid-cols-2 gap-2 mt-4 border-t border-outline-variant/30 pt-4">
+                <div>
+                  <p className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Status Action</p>
                   <select 
                     value={project.status} 
                     onChange={(e) => updateStatus(project.id, e.target.value)}
-                    className="w-full bg-surface text-on-surface border border-outline-variant/30 py-2.5 rounded-lg font-label-md text-center outline-none focus:border-primary"
+                    className="w-full bg-transparent text-on-surface font-body-md font-medium outline-none p-0 border-none cursor-pointer focus:ring-0"
                   >
-                    <option value="active">Mark Active</option>
-                    <option value="completed">Mark Completed</option>
+                    <option value="active">Active Site</option>
+                    <option value="completed">Completed</option>
                   </select>
+                </div>
+                <div>
+                  <p className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Start Date</p>
+                  <p className="font-body-md text-body-md text-on-surface font-medium flex items-center gap-1">
+                    <span className="material-symbols-outlined text-[16px] text-on-surface-variant">calendar_today</span> {new Date(project.created_at).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
+                  </p>
                 </div>
               </div>
             </article>

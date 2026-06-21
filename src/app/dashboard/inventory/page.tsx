@@ -217,79 +217,46 @@ export default function InventoryPage() {
           </div>
         )}
 
-        {/* Main Data Table Container */}
-        <div className="bg-surface-container-lowest/70 backdrop-blur-md rounded-xl overflow-hidden shadow-sm border border-outline-variant/30">
-          {/* Table Toolbar */}
-          <div className="p-4 border-b border-outline-variant/30 flex flex-col sm:flex-row justify-between items-center gap-4 bg-surface-container-low/50">
-            <div className="flex gap-2 w-full sm:w-auto">
-              <div className="relative w-full sm:w-64">
-                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
-                <input type="text" placeholder="Search materials..." className="w-full pl-10 pr-8 py-2 bg-surface border border-outline-variant rounded-lg text-body-md focus:outline-none focus:border-secondary" />
-              </div>
+        {/* Inventory List (Bento-style Cards) */}
+        <section className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {loading ? (
+            <div className="p-8 text-center text-on-surface-variant col-span-full">Loading inventory...</div>
+          ) : materials.length === 0 ? (
+            <div className="p-16 text-center text-on-surface-variant col-span-full flex flex-col items-center">
+              <span className="material-symbols-outlined text-[48px] opacity-20 mb-4">inventory_2</span>
+              <p>No materials logged yet.</p>
             </div>
-          </div>
-
-          {/* Desktop Table View */}
-          <div className="hidden md:block overflow-x-auto">
-            {loading ? (
-              <div className="p-16 text-center text-on-surface-variant">Loading inventory...</div>
-            ) : materials.length === 0 ? (
-              <div className="p-16 text-center text-on-surface-variant">No materials logged yet.</div>
-            ) : (
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="bg-primary-container text-on-primary-container font-label-sm text-label-sm uppercase tracking-wider">
-                    <th className="p-4 font-semibold w-32">Date</th>
-                    <th className="p-4 font-semibold">Material Item</th>
-                    <th className="p-4 font-semibold text-right">Quantity (In)</th>
-                    <th className="p-4 font-semibold">Project Allocation</th>
-                    <th class="p-4 font-semibold">Supplier</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-outline-variant/20 bg-surface/50">
-                  {materials.map((mat) => (
-                    <tr key={mat.id} className="hover:bg-surface-variant/30 transition-colors group">
-                      <td className="p-4 text-on-surface-variant">{new Date(mat.received_date).toLocaleDateString('en-IN')}</td>
-                      <td className="p-4">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded bg-surface-container flex items-center justify-center text-on-surface-variant uppercase font-bold text-xs">
-                            {mat.item_name.substring(0, 2)}
-                          </div>
-                          <div>
-                            <p className="font-medium text-on-surface">{mat.item_name}</p>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="p-4 text-right font-medium text-secondary">{mat.quantity} {mat.unit}</td>
-                      <td className="p-4 text-on-surface">{mat.projects?.name || 'Central'}</td>
-                      <td className="p-4 text-on-surface-variant">{mat.supplier || '-'}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-          </div>
-
-          {/* Mobile List View */}
-          <div className="md:hidden flex flex-col">
-            {loading ? (
-              <div className="p-8 text-center text-on-surface-variant">Loading inventory...</div>
-            ) : materials.map(mat => (
-              <div key={mat.id} className="p-4 border-b border-outline-variant/20 hover:bg-surface-variant/30 transition-colors">
-                <div className="flex justify-between items-start mb-2">
+          ) : (
+            materials.map(mat => (
+              <article key={mat.id} className="bg-surface-container-lowest rounded-[20px] p-6 shadow-sm border border-outline-variant/30 flex flex-col">
+                <div className="flex justify-between items-start mb-3">
                   <div>
-                    <h3 className="font-semibold text-on-surface text-[16px]">{mat.item_name}</h3>
-                    <p className="font-label-sm text-label-sm text-on-surface-variant">{mat.projects?.name || 'Central'}</p>
+                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-[8px] bg-surface-container text-on-surface-variant font-label-sm text-label-sm mb-2">
+                      <span className="material-symbols-outlined text-[16px]">hardware</span> {mat.projects?.name || 'Central'}
+                    </span>
+                    <h2 className="font-headline-md text-headline-md text-on-surface">{mat.item_name}</h2>
+                  </div>
+                  <button className="text-on-surface-variant hover:text-primary transition-colors">
+                    <span className="material-symbols-outlined">more_vert</span>
+                  </button>
+                </div>
+                <div className="flex items-end justify-between mt-auto">
+                  <div>
+                    <p className="font-label-md text-label-md text-on-surface-variant mb-1">Received Quantity</p>
+                    <div className="flex items-baseline gap-1 text-on-surface">
+                      <span className="font-display text-display">{mat.quantity}</span>
+                      <span className="font-body-md text-body-md font-medium text-secondary">{mat.unit}</span>
+                    </div>
                   </div>
                   <div className="text-right">
-                    <p className="font-headline-md text-[16px] text-secondary font-bold">+{mat.quantity} {mat.unit}</p>
-                    <p className="font-label-sm text-label-sm text-on-surface-variant mt-1">{new Date(mat.received_date).toLocaleDateString('en-IN')}</p>
+                    <p className="font-label-md text-label-md text-on-surface-variant mb-1">Date</p>
+                    <p className="font-body-md text-body-md font-medium text-secondary">{new Date(mat.received_date).toLocaleDateString('en-IN')}</p>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
+              </article>
+            ))
+          )}
+        </section>
       </div>
     </div>
   );

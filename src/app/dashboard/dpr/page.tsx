@@ -139,50 +139,59 @@ export default function DPRPage() {
         <div className="max-w-4xl mx-auto space-y-6 relative">
           
           {showAddForm && (
-            <div className="bg-surface-container-lowest rounded-xl p-6 border border-outline-variant/30 mb-8 shadow-md animate-in fade-in slide-in-from-top-4 relative z-20">
+            <div className="bg-surface-container-lowest rounded-[20px] p-[20px] mb-8 shadow-sm animate-in fade-in slide-in-from-top-4 relative z-20">
               <h2 className="font-headline-md text-headline-md text-on-surface mb-6 flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary">edit_document</span> Write Today's Report
               </h2>
-              <form onSubmit={handleAddDPR} className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <form onSubmit={handleAddDPR} className="flex flex-col gap-4">
                 
-                <div className="flex flex-col gap-1">
-                  <label className="font-label-sm text-label-sm text-on-surface-variant">Project / Site</label>
+                <div className="flex flex-col gap-2">
+                  <label className="font-body-md text-body-md font-medium text-secondary">Site Location</label>
                   <div className="relative">
-                    <select required={projects.length > 0} disabled={projects.length === 0} value={projectId} onChange={(e) => setProjectId(e.target.value)} className="w-full bg-surface pl-4 pr-10 py-3 rounded-lg border border-outline-variant/50 focus:border-secondary focus:ring-1 focus:ring-secondary font-body-md text-body-md text-on-surface appearance-none transition-colors h-[48px]">
+                    <select required={projects.length > 0} disabled={projects.length === 0} value={projectId} onChange={(e) => setProjectId(e.target.value)} className="w-full appearance-none bg-surface-bright border border-outline-variant/30 rounded-[14px] px-4 py-3 h-12 font-body-lg text-body-lg text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
                       {projects.length === 0 ? <option value="">No projects available</option> : <option value="" disabled>Select a project</option>}
                       {projects.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
                     </select>
-                    <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
+                    <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">arrow_drop_down</span>
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-1">
-                  <label className="font-label-sm text-label-sm text-on-surface-variant">Date</label>
-                  <input type="date" required value={date} onChange={(e) => setDate(e.target.value)} className="w-full bg-surface px-4 py-3 rounded-lg border border-outline-variant/50 focus:border-secondary focus:ring-1 focus:ring-secondary font-body-md text-body-md text-on-surface transition-colors h-[48px]" />
+                <div className="flex flex-col gap-2">
+                  <label className="font-body-md text-body-md font-medium text-secondary">Date</label>
+                  <input type="date" required value={date} onChange={(e) => setDate(e.target.value)} className="w-full bg-surface-bright border border-outline-variant/30 rounded-[14px] px-4 py-3 h-12 font-body-lg text-body-lg text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" />
                 </div>
 
-                <div className="flex flex-col gap-1 md:col-span-2">
-                  <label className="font-label-sm text-label-sm text-on-surface-variant">Total Labor Count</label>
-                  <input type="number" required value={laborCount} onChange={(e) => setLaborCount(e.target.value)} placeholder="e.g. 15" className="w-full bg-surface px-4 py-3 rounded-lg border border-outline-variant/50 focus:border-secondary focus:ring-1 focus:ring-secondary font-body-md text-body-md text-on-surface transition-colors h-[48px]" />
+                <div className="flex flex-col gap-2">
+                  <label className="font-body-md text-body-md font-medium text-secondary">Work Executed Today</label>
+                  <textarea required rows={4} value={workDone} onChange={(e) => setWorkDone(e.target.value)} placeholder="Detail the specific tasks completed..." className="w-full bg-surface-bright border border-outline-variant/30 rounded-[14px] p-4 font-body-lg text-body-lg text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors resize-none" />
                 </div>
 
-                <div className="flex flex-col gap-1 md:col-span-2">
-                  <label className="font-label-sm text-label-sm text-on-surface-variant">Work Done Today</label>
-                  <textarea required rows={3} value={workDone} onChange={(e) => setWorkDone(e.target.value)} placeholder="Describe what was accomplished today..." className="w-full bg-surface px-4 py-3 rounded-lg border border-outline-variant/50 focus:border-secondary focus:ring-1 focus:ring-secondary font-body-md text-body-md text-on-surface transition-colors resize-y" />
+                <div className="flex flex-col gap-2">
+                  <label className="font-body-md text-body-md font-medium text-secondary">Total Workforce Present</label>
+                  <div className="flex items-center justify-between bg-surface-bright border border-outline-variant/30 rounded-[14px] h-14 px-2 w-full md:w-1/2">
+                    <button type="button" onClick={() => setLaborCount(String(Math.max(0, parseInt(laborCount || '0') - 1)))} className="w-10 h-10 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-variant/50 transition-colors active:scale-95">
+                      <span className="material-symbols-outlined">remove</span>
+                    </button>
+                    <input type="number" min="0" required value={laborCount} onChange={(e) => setLaborCount(e.target.value)} className="w-20 text-center bg-transparent border-none font-headline-md text-headline-md text-on-surface focus:ring-0 p-0 outline-none" />
+                    <button type="button" onClick={() => setLaborCount(String(parseInt(laborCount || '0') + 1))} className="w-10 h-10 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-variant/50 transition-colors active:scale-95">
+                      <span className="material-symbols-outlined">add</span>
+                    </button>
+                  </div>
                 </div>
 
-                <div className="flex flex-col gap-1 md:col-span-2">
-                  <label className="font-label-sm text-label-sm text-on-surface-variant">Issues / Blockers (Optional)</label>
-                  <textarea rows={2} value={issues} onChange={(e) => setIssues(e.target.value)} placeholder="Any material shortages, delays, or issues?" className="w-full bg-surface px-4 py-3 rounded-lg border border-outline-variant/50 focus:border-secondary focus:ring-1 focus:ring-secondary font-body-md text-body-md text-on-surface transition-colors resize-y" />
+                <div className="flex flex-col gap-2">
+                  <label className="font-body-md text-body-md font-medium text-secondary">Delays / Issues / Remarks (Optional)</label>
+                  <textarea rows={2} value={issues} onChange={(e) => setIssues(e.target.value)} placeholder="Any weather delays or site issues..." className="w-full bg-surface-bright border border-outline-variant/30 rounded-[14px] p-4 font-body-lg text-body-lg text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors resize-none" />
                 </div>
 
-                <div className="flex flex-col gap-1 md:col-span-2">
-                  <label className="font-label-sm text-label-sm text-on-surface-variant">Plan for Tomorrow (Optional)</label>
-                  <textarea rows={2} value={nextDayPlan} onChange={(e) => setNextDayPlan(e.target.value)} placeholder="What is the target for tomorrow?" className="w-full bg-surface px-4 py-3 rounded-lg border border-outline-variant/50 focus:border-secondary focus:ring-1 focus:ring-secondary font-body-md text-body-md text-on-surface transition-colors resize-y" />
+                <div className="flex flex-col gap-2">
+                  <label className="font-body-md text-body-md font-medium text-secondary">Plan for Tomorrow (Optional)</label>
+                  <textarea rows={2} value={nextDayPlan} onChange={(e) => setNextDayPlan(e.target.value)} placeholder="What is the target for tomorrow?" className="w-full bg-surface-bright border border-outline-variant/30 rounded-[14px] p-4 font-body-lg text-body-lg text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors resize-none" />
                 </div>
 
-                <div className="md:col-span-2 flex justify-end mt-2">
-                  <button type="submit" disabled={submitting} className="w-full md:w-auto px-8 py-3 bg-secondary text-on-secondary rounded-lg font-label-md text-label-md hover:bg-secondary/90 transition-colors shadow-md">
+                <div className="pt-4 mt-2">
+                  <button type="submit" disabled={submitting} className="w-full h-12 bg-primary text-on-primary rounded-full font-label-md text-label-md font-bold uppercase tracking-wider flex justify-center items-center gap-2 hover:opacity-90 active:scale-[0.98] transition-all shadow-md">
+                    <span className="material-symbols-outlined text-[20px]">send</span>
                     {submitting ? 'Submitting...' : 'Submit Report'}
                   </button>
                 </div>
