@@ -13,7 +13,7 @@ export function Sidebar() {
   return (
     <aside className="hidden md:flex flex-col h-screen fixed bg-primary-container/80 backdrop-blur-xl docked w-sidebar-width left-0 border-r border-outline-variant/20 shadow-xl py-base z-50">
       <div className="px-gutter mb-8 mt-2 flex items-center pt-4">
-        <Logo iconSize={42} className="text-on-primary-container" />
+        <Logo iconSize={56} className="text-on-primary-container" />
       </div>
 
       <nav className="flex-1 overflow-y-auto px-base space-y-1">
