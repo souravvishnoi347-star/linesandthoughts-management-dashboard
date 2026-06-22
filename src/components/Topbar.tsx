@@ -39,11 +39,6 @@ export function Topbar() {
         </div>
       </div>
 
-      {/* Mobile: Page title in center */}
-      <div className="md:hidden absolute left-1/2 -translate-x-1/2">
-        <span className="font-display text-headline-md font-bold text-primary">{pageTitle}</span>
-      </div>
-
       {/* Right side: actions */}
       <div className="flex items-center gap-1 relative">
 
